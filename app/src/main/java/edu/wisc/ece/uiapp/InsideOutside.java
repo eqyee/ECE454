@@ -25,8 +25,11 @@ public class InsideOutside extends Fragment  implements LocationListener {
     private GeofenceManager mGeofenceManager;
     private double currentLatitude;
     private double currentLongitude;
+    private double currentUncertainty;
     private TextView latitude;
     private TextView longitude;
+    private TextView uncertainty;
+    private TextView insideorout;
 
 
     @Override
@@ -47,6 +50,9 @@ public class InsideOutside extends Fragment  implements LocationListener {
 
         latitude = (TextView)rootView.findViewById(R.id.latitude);
         longitude = (TextView)rootView.findViewById(R.id.longitude);
+        uncertainty = (TextView)rootView.findViewById(R.id.Uncertainty);
+        insideorout = (TextView)rootView.findViewById(R.id.InsideOrOut);
+
         Button enableGeofence = (Button)rootView.findViewById((R.id.geofenceButton));
         enableGeofence.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,9 +94,13 @@ public class InsideOutside extends Fragment  implements LocationListener {
     public void onLocationChanged(Location location) {
         currentLatitude = location.getLatitude();
         currentLongitude = location.getLongitude();
+        currentUncertainty = location.getAccuracy();
+
 
         latitude.setText("Latitude: " + currentLatitude);
-        longitude.setText("longitude: " + currentLongitude);
+        longitude.setText("Longitude: " + currentLongitude);
+        uncertainty.setText("Uncertainty: " + currentUncertainty);
+        checkInsideProbability();
     }
     @Override
     public void onProviderEnabled(String provider) {}
@@ -104,7 +114,7 @@ public class InsideOutside extends Fragment  implements LocationListener {
         List<Double> currentLocation = new ArrayList<>();
         currentLocation.add(currentLatitude);
         currentLocation.add(currentLongitude);
-        currentLocation.add(5.0);
+        currentLocation.add(20.0);
         currentLocation.add(1.0);
         fences.add(currentLocation);
         mGeofenceManager.addGeofences(fences);
@@ -114,4 +124,15 @@ public class InsideOutside extends Fragment  implements LocationListener {
         mGeofenceManager.disableGeofence();
     }
 
+    public void checkInsideProbability(){
+        if(currentUncertainty < 30.0){
+            insideorout.setText("You are probably outside (or by a window)");
+        }
+        else if(currentUncertainty < 100){
+            insideorout.setText("You may be inside");
+        }
+        else{
+            insideorout.setText("You are most likely inside");
+        }
+    }
 }

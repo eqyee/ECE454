@@ -99,7 +99,7 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
     }
     public void onResult(Status status){
         if(status.isSuccess()){
-            Toast.makeText(applicationContext, "Geofence Added", Toast.LENGTH_SHORT).show();
+            Toast.makeText(applicationContext, "Geofence Added Or Maybe Removed. How Should I Know.", Toast.LENGTH_SHORT).show();
         }
         else {
             // Get the status code for the error and log it using a user-friendly message.
