@@ -1,0 +1,11 @@
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bar_tv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:gravity="left"
+    android:paddingLeft="32dp"
+    android:paddingTop="8dp"
+    android:text="@string/default_listView"
+    android:textSize="14sp"
+    android:textStyle="bold" />

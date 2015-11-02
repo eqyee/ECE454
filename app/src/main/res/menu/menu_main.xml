@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+    <item
+        android:title="NewsFeed"
+        android:id="@+id/NewsFeed"
+        app:showAsAction="withText|ifRoom"
+        >
+    </item>
+    <item
+        android:id="@+id/HeatMap"
+        android:title="HeatMap"
+        app:showAsAction="withText|ifRoom">
+
+    </item>
+    <item
+        android:id="@+id/Profile"
+        android:title="Profile"
+        app:showAsAction="withText|ifRoom"
+        >
+    </item>
+
+</menu>
