@@ -14,14 +14,12 @@ import java.util.ArrayList;
 @SuppressLint("NewApi")
 public class MainActivity extends FragmentActivity implements ActionBar.TabListener {
 
+    public static ArrayList<Bar> bars;
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
-
     // Tab titles
-    private String[] tabs = {"Profile", "News Feed", "Heat Map" };
-
-    public static ArrayList<Bar> bars;
+    private String[] tabs = {"Profile", "News Feed", "Heat Map", "Inside/Outside" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

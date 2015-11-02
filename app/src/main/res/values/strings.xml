@@ -4,4 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="default_listView">TBD</string>
+    <string name="geofenceButtonText">Enable Geofence</string>
+    <string name="disableGeofenceButton">Disable Geofence</string>
 </resources>
