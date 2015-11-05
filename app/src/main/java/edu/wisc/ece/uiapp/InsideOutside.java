@@ -47,9 +47,7 @@ public class InsideOutside extends Fragment  implements LocationListener {
         super.onCreate(savedInstanceState);
 
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-        try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, this);
-        }catch (SecurityException se){}
+        getLocationUpdates();
     }
 
     @Override
@@ -153,9 +151,15 @@ public class InsideOutside extends Fragment  implements LocationListener {
         }
         else if(currentUncertainty > 9999){
             insideorout.setText("Can't get GPS. Assuming you are inside");
+            try {
+                locationManager.removeUpdates(this);
+            } catch(SecurityException se){}
             locTimer.schedule(locTimerTask, 180000);
         }
         else if(currentUncertainty > 300){
+            try {
+                locationManager.removeUpdates(this);
+            } catch(SecurityException se){}
             locTimer.schedule(locTimerTask, 180000);
         }
         else{
