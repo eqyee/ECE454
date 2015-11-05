@@ -5,6 +5,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Evan Yee on 11/2/2015.
@@ -31,6 +34,13 @@ public class InsideOutside extends Fragment  implements LocationListener {
     private TextView uncertainty;
     private TextView insideorout;
 
+    private Timer timer;
+    private TimerTask timerTask;
+    final Handler handler = new Handler();
+    private Timer locTimer;
+    private TimerTask locTimerTask;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,7 +48,7 @@ public class InsideOutside extends Fragment  implements LocationListener {
 
         locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 500, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, this);
         }catch (SecurityException se){}
     }
 
@@ -69,6 +79,13 @@ public class InsideOutside extends Fragment  implements LocationListener {
         });
         mGeofenceManager = new GeofenceManager(getActivity());
 
+        timer = new Timer();
+        initializeTimer();
+        timer.schedule(timerTask, 180000);
+
+        locTimer = new Timer();
+        initializeLocTimer();
+
         return rootView;
     }
 
@@ -92,6 +109,7 @@ public class InsideOutside extends Fragment  implements LocationListener {
      */
     @Override
     public void onLocationChanged(Location location) {
+        timer.cancel();
         currentLatitude = location.getLatitude();
         currentLongitude = location.getLongitude();
         currentUncertainty = location.getAccuracy();
@@ -101,6 +119,7 @@ public class InsideOutside extends Fragment  implements LocationListener {
         longitude.setText("Longitude: " + currentLongitude);
         uncertainty.setText("Uncertainty: " + currentUncertainty);
         checkInsideProbability();
+        timer.schedule(timerTask, 180000);
     }
     @Override
     public void onProviderEnabled(String provider) {}
@@ -126,13 +145,54 @@ public class InsideOutside extends Fragment  implements LocationListener {
 
     public void checkInsideProbability(){
         if(currentUncertainty < 30.0){
-            insideorout.setText("You are probably outside (or by a window)");
+            insideorout.setText("You are probably outside (or by a window). Will use" +
+                    "a function of distance from center as heuristic.");
         }
         else if(currentUncertainty < 100){
             insideorout.setText("You may be inside");
         }
+        else if(currentUncertainty > 9999){
+            insideorout.setText("Can't get GPS. Assuming you are inside");
+            locTimer.schedule(locTimerTask, 180000);
+        }
+        else if(currentUncertainty > 300){
+            locTimer.schedule(locTimerTask, 180000);
+        }
         else{
             insideorout.setText("You are most likely inside");
         }
+    }
+
+    private void initializeTimer(){
+        timerTask = new TimerTask() {
+            public void run() {
+                //use a handler to run a toast that shows the current timestamp
+                handler.post(new Runnable() {
+                    public void run() {
+                        currentUncertainty = 10000;
+                        checkInsideProbability();
+                    }
+                });
+            }
+        };
+    }
+
+    public void getLocationUpdates(){
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, this);
+        }catch (SecurityException se){}
+    }
+
+    private void initializeLocTimer(){
+        locTimerTask = new TimerTask() {
+            public void run() {
+                //use a handler to run a toast that shows the current timestamp
+                handler.post(new Runnable() {
+                    public void run() {
+                        getLocationUpdates();
+                    }
+                });
+            }
+        };
     }
 }
