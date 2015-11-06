@@ -6,27 +6,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckedTextView;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class ArrayAdapter extends BaseExpandableListAdapter {
 
-    private final ArrayList<Bar> bars;
+    private final ArrayList<Event> events;
     public LayoutInflater inflater;
     public Activity activity;
 
-    public ArrayAdapter(Activity activity, ArrayList<Bar> bars) {
+    public ArrayAdapter(Activity activity, ArrayList<Event> events) {
         this.activity = activity;
-        this.bars = bars;
+        this.events = events;
         inflater = activity.getLayoutInflater();
     }
 
     @Override
     public Object getChild(int position, int childPosition) {
-        return bars.get(position).events.get(childPosition);
+        return events.get(position).getNewsFeedItems().get(childPosition);
     }
 
     @Override
@@ -37,18 +40,18 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int position, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final Event event = (Event) getChild(position, childPosition);
+        final String eventItem = (String) getChild(position, childPosition);
         TextView text = null;
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.listrow_details, null);
+            convertView = inflater.inflate(R.layout.listrow_child, null);
         }
-        text = (TextView) convertView.findViewById(R.id.bar_details_tv);
-        text.setText(event.name);
+        text = (TextView) convertView.findViewById(R.id.event_details_tv);
+        text.setText(eventItem);
         convertView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO From here we can launch a "view event info" tab if we want
-                Toast.makeText(activity, event.name, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, eventItem, Toast.LENGTH_SHORT).show();
             }
         });
         return convertView;
@@ -56,17 +59,17 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int position) {
-        return bars.get(position).events.size();
+        return events.get(position).getNewsFeedItems().size();
     }
 
     @Override
     public Object getGroup(int position) {
-        return bars.get(position);
+        return events.get(position);
     }
 
     @Override
     public int getGroupCount() {
-        return bars.size();
+        return events.size();
     }
 
     @Override
@@ -87,11 +90,17 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int position, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.listrow_bar, null);
+            convertView = inflater.inflate(R.layout.listrow_group, null);
         }
-        Bar bar = (Bar) getGroup(position);
-        ((CheckedTextView) convertView).setText(bar.name);
-        ((CheckedTextView) convertView).setChecked(isExpanded);
+        Event event = (Event) getGroup(position);
+        TextView itemTextView = (TextView)convertView.findViewById(R.id.groupItem_tv);
+        itemTextView.setText(event.getSubject());
+        /*itemTextView.setOnClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+
+            }
+        });*/
         return convertView;
     }
 

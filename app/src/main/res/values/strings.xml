@@ -6,4 +6,6 @@
     <string name="default_listView">TBD</string>
     <string name="geofenceButtonText">Enable Geofence</string>
     <string name="disableGeofenceButton">Disable Geofence</string>
+    <string name="viewEvent">View</string>
+    <string name="likeable_tv_child_text">Cheers!</string>
 </resources>
