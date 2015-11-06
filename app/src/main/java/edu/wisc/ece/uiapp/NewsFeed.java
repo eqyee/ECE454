@@ -20,7 +20,7 @@ public class NewsFeed extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_newsfeed, container, false);
 
         ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.listView);
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), MainActivity.bars);
+        ArrayAdapter adapter = new ArrayAdapter(getActivity(), MainActivity.events);
         listView.setAdapter(adapter);
 
         return rootView;
