@@ -8,6 +8,7 @@ public class Event {
     String start_time;
     String end_time;
     int favorites;
+    int barId;
     //users_present
     //spec_tag
     String subject;
@@ -20,13 +21,13 @@ public class Event {
         this.name = name;
     }
 
-    public void setBar(Bar parent) {
-        this.parentBar = parent;
-    }
-
-    public Bar getBar() {
-        return this.parentBar;
-    }
+//    public void setBar(Bar parent) {
+//        this.parentBar = parent;
+//    }
+//
+//    public Bar getBar() {
+//        return this.parentBar;
+//    }
 
     public void setMessage(String message) {
         this.message = message;
@@ -39,6 +40,9 @@ public class Event {
         this.subject = subject;
     }
 
+    public void setBarId(int id){this.barId = id;}
+    public int getBarId(){return this.barId;}
+
     public String getSubject() {
         return this.subject;
     }
@@ -50,6 +54,9 @@ public class Event {
     public String getStartTime() {
         return this.start_time;
     }
+
+    public void setFavorites(int favorites){ this.favorites = favorites;}
+    public int getFavorites(){ return this.favorites;}
 
     // public Time getStartTimeAsTime() {}
 

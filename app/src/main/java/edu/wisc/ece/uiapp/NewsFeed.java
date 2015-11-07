@@ -12,15 +12,21 @@ import android.widget.ExpandableListView;
  */
 public class NewsFeed extends Fragment {
 
+    static ArrayAdapter adapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_newsfeed, container, false);
 
         ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.listView);
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), MainActivity.events);
+        adapter = new ArrayAdapter(getActivity(), MainActivity.events);
         listView.setAdapter(adapter);
 
         return rootView;
+    }
+
+    public static void eventsListDataHasChanged() {
+        adapter.notifyDataSetChanged();
     }
 }
