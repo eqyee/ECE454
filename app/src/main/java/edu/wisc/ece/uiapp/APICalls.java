@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.*;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -16,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -35,7 +39,7 @@ import org.json.JSONObject;
  */
 public class APICalls {
     private static JSONArray jsonBars;
-    public static HashMap<Integer,Bar> BarMap;
+    public static HashMap<Integer,Bar> barMap;
     public static void getEvents(Activity activity, String latitude, String longitude, String radius){
         eventQuery hi = new eventQuery(activity);
         String strs[ ] = new String [3];
@@ -125,23 +129,43 @@ public class APICalls {
         }
     }
     public static void getBars(String latitude, String longitude, String radius){
-        BarMap = new HashMap<Integer, Bar>();
-      //  eventQuery hi = new barQuery();
+
+        barQuery hi = new barQuery();
         String strs[ ] = new String [3];
         strs[0] = latitude;
         strs[1] = longitude;
         strs[2] = radius;
-      //  hi.execute(strs);
-        for (int i=0;i<jsonBars.length();i++){
-            try {
-                JSONObject tmp = jsonBars.getJSONObject(i);
-            }
-            catch (JSONException e){
+        hi.execute(strs);
 
+
+    }
+    public static void fillBars(JSONArray bars){
+        barMap = new HashMap<Integer, Bar>();
+        if (bars != null) {
+            for (int i = 0; i < bars.length(); i++) {
+                try {
+                    JSONObject tmp = bars.getJSONObject(i);
+                    Bar bar = new Bar(tmp.getString("bar_name"));
+                    bar.setId(tmp.getInt("id"));
+                    bar.setPatrons(tmp.getInt("patrons"));
+                    String parse = tmp.getString("location");
+                    Log.d("BREAKING", parse);
+                    if (parse == null || parse.equals("null"))
+                        continue;
+                    Matcher m = Pattern.compile("\\((.*?)\\)").matcher(parse);
+                    m.find();
+                    parse = m.group(1);
+                    String array[] = parse.split(" ");
+                    LatLng loc = new LatLng(Double.parseDouble(array[0]), Double.parseDouble(array[1]));
+                    bar.setLocation(loc);
+                    barMap.put(bar.getId(), bar);
+
+                } catch (JSONException e) {
+
+                }
             }
+
         }
-        jsonBars = new JSONArray();
-
     }
     protected static class barQuery extends AsyncTask<String, Void, JSONArray> {
 
@@ -164,8 +188,7 @@ public class APICalls {
 
             //Construct an HTTP POST
             HttpClient httpclient = new DefaultHttpClient();
-            String command = ("http://flock-app-dev2.elasticbeanstalk.com/api/bars/?" +
-                    "location=POINT(" + latitude + "%20" + longitude + ")&radius=" + radius);
+            String command = ("http://flock-app-dev2.elasticbeanstalk.com/api/bars/");
             HttpGet getVal = new HttpGet(command);
             try {
                 HttpResponse response = httpclient.execute(getVal);
@@ -185,15 +208,12 @@ public class APICalls {
                 e.printStackTrace();
                 jsonArray = new JSONArray();
             }
-            jsonBars = jsonArray;
             return jsonArray;
         }
         @Override
         protected void onPostExecute(JSONArray res) {
-            // Your code here
-//            if (res != "") {
-//                ((TextView)findViewById(R.id.outVal)).setText("Value: " + res);
-//            }
+            APICalls.fillBars(res);
+
         }
     }
 }
