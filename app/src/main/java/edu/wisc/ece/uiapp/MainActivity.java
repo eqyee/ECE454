@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.SearchView;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -87,46 +88,12 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     // Will need to do some sort of database call to fill the bars later.
     private void fillEvents() {
-        String name = "Bar1";
-        String name2 = "Bar2";
-        Bar bar1 = new Bar(name);
-        //bar1.addEvent(new Event("event1"));
-        //bar1.addEvent(new Event("event2"));
-        Bar bar2 = new Bar(name2);
-        //bar2.addEvent(new Event("event3"));
-
-        Event e1 = new Event("name1");
-        e1.setSubject("My first event!");
-        e1.setMessage("Here is some more info about the event.");
-        e1.setStartTime("Starts now.");
-        e1.setEndTime("Ends tomorrow.");
-        e1.setBar(bar1);
-        bar1.addEvent(e1);
-
-        Event e2 = new Event("event number 2.");
-        e2.setSubject("Just another event.");
-        e2.setMessage("Some more info.");
-        e2.setStartTime("Starts later today.");
-        e2.setEndTime("Ends tonight");
-        e2.setBar(bar2);
-        bar2.addEvent(e2);
+        String lat = "43.0726439";
+        String lon = "-89.3981458";
+        String rad = "10000000000000000";
+        APICalls.getEvents(this,lat, lon, rad);
 
 
-
-
-
-        events.add(e1);
-        events.add(e2);
-        events.add(e1);
-        events.add(e2);
-        events.add(e1);
-        events.add(e2);
-        events.add(e1);
-        events.add(e2);
-        events.add(e1);
-        events.add(e2);
-        events.add(e1);
-        events.add(e2);
     }
 
     @Override
