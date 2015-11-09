@@ -77,7 +77,11 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
         /* map is already there, just return view as it is */
         }
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        try {
+            mapFragment.getMapAsync(this);
+        } catch(Exception e){
+            Log.e("HeatMap", "Get a newer phone");
+        }
         geocoder = new Geocoder(view.getContext(), Locale.US);
 
         search = (com.quinny898.library.persistentsearch.SearchBox)view.findViewById(R.id.searchbox);
@@ -96,6 +100,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
                 .data(heatData)
                 .build();
         mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+
     }
     private List<LatLng> getHeatData(){
         ArrayList<LatLng> heatData = new ArrayList<>();
@@ -152,7 +157,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
 
                     map.addMarker(new MarkerOptions()
                             .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
-                            .position(new LatLng(41.889, -87.622)));
+                            .position(center));
 
                 } catch (Exception e) {
                     Log.e("", "Something went wrong: ", e);
