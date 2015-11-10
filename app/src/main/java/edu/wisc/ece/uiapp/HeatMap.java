@@ -93,19 +93,34 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
         return view;
     }
     @Override
+    public void onResume(){
+        super.onResume();
+        if(this.map != null)
+            updateHeatMap();
+    }
+    @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
+        updateHeatMap();
+        LatLng center = new LatLng(CurrentLocation.latitude, CurrentLocation.longitude);
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15.0f));
+    }
+    private void updateHeatMap(){
         List<LatLng> heatData = getHeatData();
         mProvider = new HeatmapTileProvider.Builder()
                 .data(heatData)
                 .build();
         mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
-
     }
     private List<LatLng> getHeatData(){
         ArrayList<LatLng> heatData = new ArrayList<>();
-        heatData.add(new LatLng(43.0683013, -89.4081464));
-        heatData.add(new LatLng(43.0699903, -89.4089725));
+        if(APICalls.barMap == null)
+            return heatData;
+        for(Bar bar: APICalls.barMap.values()){
+            for(int i = 0; i < bar.getPatrons(); i++) {
+                heatData.add(bar.getLocation());
+            }
+        }
         return heatData;
     }
     private void setupSearchBar(){
@@ -158,7 +173,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
                     map.addMarker(new MarkerOptions()
                             .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                             .position(center));
-
+                    updateHeatMap();
                 } catch (Exception e) {
                     Log.e("", "Something went wrong: ", e);
                 }
@@ -177,7 +192,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
                     map.addMarker(new MarkerOptions()
                             .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                             .position(center));
-
+                    updateHeatMap();
                 } catch (Exception e) {
                     Log.e("", "Something went wrong: ", e);
                 }

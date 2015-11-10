@@ -3,36 +3,26 @@ package edu.wisc.ece.uiapp;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.*;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListView;
 
 import com.google.android.gms.maps.model.LatLng;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by CCS on 11/7/2015.
@@ -156,7 +146,7 @@ public class APICalls {
                     m.find();
                     parse = m.group(1);
                     String array[] = parse.split(" ");
-                    LatLng loc = new LatLng(Double.parseDouble(array[0]), Double.parseDouble(array[1]));
+                    LatLng loc = new LatLng(Double.parseDouble(array[1]), Double.parseDouble(array[0]));
                     bar.setLocation(loc);
                     barMap.put(bar.getId(), bar);
 
