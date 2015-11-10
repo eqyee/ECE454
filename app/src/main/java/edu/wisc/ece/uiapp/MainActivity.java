@@ -5,6 +5,9 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
@@ -13,7 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.SearchView;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -27,6 +29,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private ActionBar actionBar;
     // Tab titles
     private String[] tabs = { "News Feed",  "Profile", "Heat Map", "Inside/Outside" };
+    public static CurrentLocation myLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +75,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         fillEvents();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+
+        try {
+            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            double longitude = location.getLongitude();
+            double latitude = location.getLatitude();
+            myLocation = new CurrentLocation(latitude, longitude);
+        }catch (Exception e){
+
+        }
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu){

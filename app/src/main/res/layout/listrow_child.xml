@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:paddingLeft="25dp"
+        android:textColor="#000000"
         />
     <ImageView
         android:id="@+id/likeable_image_child"
@@ -24,7 +25,8 @@
         android:layout_height="wrap_content"
         android:text="@string/likeable_tv_child_text"
         android:layout_alignBottom="@+id/likeable_image_child"
-        android:layout_toEndOf="@+id/likeable_image_child" />
+        android:layout_toEndOf="@+id/likeable_image_child"
+        android:textColor="#000000"/>
     <View
         android:layout_below="@id/likeable_image_child"
         android:layout_width="match_parent"
