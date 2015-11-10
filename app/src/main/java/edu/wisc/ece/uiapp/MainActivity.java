@@ -101,13 +101,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     // Will need to do some sort of database call to fill the bars later.
     private void fillEvents() {
-        String lat = "43.0726439";
-        String lon = "-89.3981458";
+        String lat = Double.toString(CurrentLocation.latitude);
+        String lon = Double.toString(CurrentLocation.longitude);
         String rad = "10000000000000000";
-        APICalls.getEvents(this,lat, lon, rad);
-        APICalls.getBars(lat,lon,rad);
-
-
+        APICalls.getEvents(this, lat, lon, rad);
+        APICalls.getBars(lat, lon, rad);
     }
 
     @Override
