@@ -16,6 +16,7 @@ import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationServices;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -39,12 +40,12 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
         this.applicationContext = context;
     }
 
-    public void addGeofences(List<List<Double>> locations){
-        mGeofenceList = new ArrayList<Geofence>();
-        for(List<Double> location : locations){
+    public void addGeofences(Collection<Bar> bars){
+        for(Bar  b:  bars){
             mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId("" + location.get(3))
-                    .setCircularRegion(location.get(0), location.get(1), (float)(double)location.get(2))
+                    .setRequestId("" + b.name)
+                            //set static radius to be 100
+                    .setCircularRegion(b.getLocation().latitude, b.getLocation().longitude, 100.0f)
                     .setExpirationDuration(100000000)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                             Geofence.GEOFENCE_TRANSITION_EXIT)
