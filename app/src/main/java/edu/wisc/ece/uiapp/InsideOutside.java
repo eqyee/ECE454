@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -127,14 +129,9 @@ public class InsideOutside extends Fragment  implements LocationListener {
     public void onProviderDisabled(String provider) {}
 
     public void enableGeofences(){
-        List<List<Double>> fences = new ArrayList<>();
-        List<Double> currentLocation = new ArrayList<>();
-        currentLocation.add(currentLatitude);
-        currentLocation.add(currentLongitude);
-        currentLocation.add(20.0);
-        currentLocation.add(1.0);
-        fences.add(currentLocation);
-        mGeofenceManager.addGeofences(fences);
+        HashMap tmp = APICalls.barMap;
+        Collection<Bar> barList = tmp.values();
+        mGeofenceManager.addGeofences(barList);
         mGeofenceManager.enableGeofence();
     }
     public void disableGeofences(){

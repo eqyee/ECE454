@@ -2,95 +2,95 @@
 <items version="2" >
 
     <item
-        jar="C:\Users\CCS\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-140538a62066143c49d75764306b5300a11db0d1.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.quinny898.library.persistentsearch\library\1.1.0-SNAPSHOT\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4c7250baed60ef7694c1c55723750831f3dbee67">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-d17163568fcd7ccf23efa6259f333d5893f9b1ee.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.1.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-c70e36cf7ebd13606a85546600d56ff1d1e8a020.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="8c046c952177602c858ed41c8fc492c939bde9aa">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-49073d46c8620603dc3640b993e382528b9230de.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-32925c2f74fef09222f58c5a39029348802fe608.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.0.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-3ec9fc9a770ebcd871085a9a24d70e8d69128c0d.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-6c5988d1ba459c6e72ee19f9e279c2618dfaac13.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.1\jars\libs\internal_impl-23.0.1.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="a0c456a59e1edab84702b48a626705aa1d830ccc">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-d88f2b099b996409a7e59cd5b4ab771c7aeac006.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.google.maps.android\android-maps-utils\0.4\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="4b1a7fac58cc85b115adee653a10b6300f90951a">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-0eb647f7c6c869d4a6a7d3bef6eb572689a9c205.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\8.1.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="3aed37c38c56679602255dd72ef356da5d327cda">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-298167493d02efec40d08d865cb4519bf051c25b.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.1.0\jars\classes.jar"
-        jumboMode="false"
-        revision="23.0.1"
-        sha1="82825756edeeb3b56b15e73b2edd56e93da5a444">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-db9c1f253454de36b6c6fdc50a86fb1e65af99ad.jar" />
-    </item>
-    <item
-        jar="C:\Users\CCS\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
+        jar="C:\Users\Sam\.gradle\caches\modules-2\files-2.1\com.nineoldandroids\library\2.4.0\e9b63380f3a242dbdbf103a2355ad7e43bad17cb\library-2.4.0.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="e9b63380f3a242dbdbf103a2355ad7e43bad17cb">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\library-2.4.0-192d52baa51bfaa1a9b0e48b964045d37af96789.jar" />
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\library-2.4.0-d9232478bd6b07bc4910f71bf2cc63ff51d292c6.jar" />
     </item>
     <item
-        jar="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\8.1.0\jars\classes.jar"
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="8c046c952177602c858ed41c8fc492c939bde9aa">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-3fa6bfa3a25d13e50358c3dc522068cbaa90f2b4.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\8.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d0dda274b703dd9c5bb056867649d22b4171ae7d">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-6bc1a760abf1bfb0771284c258fad7671b3713b4.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\23.0.1\support-annotations-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="1fce89a6428c51467090d7f424e4c9c3dbd55f7e">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\support-annotations-23.0.1-2f67f3784af6cf07a68908f28fc221a40c8c7569.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="c31e21b53ff2f74664e498248d01453a32e32d48">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-4f7e13b7f420c485cc5d3fe65048f687f50bb0ef.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.google.maps.android\android-maps-utils\0.4\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4b1a7fac58cc85b115adee653a10b6300f90951a">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-98c72774ddb9a0cb0d5462602988d7fc2abc1a2d.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-location\8.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="3aed37c38c56679602255dd72ef356da5d327cda">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-6bcad903dc9d39a9bf169f493e0e4e6116fcaf15.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.android.support\support-v13\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="a0c456a59e1edab84702b48a626705aa1d830ccc">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-7384d16ecde3a6a8cec2d50f7be5aadd9acc5244.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\8.1.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="82825756edeeb3b56b15e73b2edd56e93da5a444">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-59682743bd91b67b49dec3c3f53ace93a1445e29.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.0.0\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-c1e4aac7f2d8999eee20bf529ff7a791a2665b19.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.google.android.gms\play-services-maps\8.1.0\jars\classes.jar"
         jumboMode="false"
         revision="23.0.1"
         sha1="2a7e47da654546f9457deb6132364f1bf33a1857">
-        <dex dex="C:\Users\CCS\Documents\ECE454Project\app\build\intermediates\pre-dexed\debug\classes-41b73389301b55044c5b7e5eb632cad45e181adc.jar" />
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-8a8cefefa09d88c89d2caa978bc83a2c02ace2da.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.android.support\support-v4\23.0.1\jars\libs\internal_impl-23.0.1.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\internal_impl-23.0.1-cedb5e872ec616e1cf659ac5c5fce89fc0dce7f5.jar" />
+    </item>
+    <item
+        jar="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\exploded-aar\com.quinny898.library.persistentsearch\library\1.1.0-SNAPSHOT\jars\classes.jar"
+        jumboMode="false"
+        revision="23.0.1"
+        sha1="4c7250baed60ef7694c1c55723750831f3dbee67">
+        <dex dex="C:\Users\Sam\Documents\Fall 2015\ECE454\ECE454\app\build\intermediates\pre-dexed\debug\classes-bf56e8dc2dc218282173b9346e6bade52f3cf17d.jar" />
     </item>
 
 </items>
