@@ -6,6 +6,9 @@ import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
 import android.support.v4.content.ContextCompat;
@@ -27,16 +30,6 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -51,11 +44,21 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
     private com.quinny898.library.persistentsearch.SearchBox search;
     private Geocoder geocoder;
     private GoogleMap map;
+    private Handler handler = new Handler(Looper.getMainLooper()){
+        @Override
+        public void handleMessage(Message inputMessage){
+            if(inputMessage.obj instanceof ArrayList){
+                ArrayList<String> results = (ArrayList)inputMessage.obj;
+                for (String place : results) {
 
-    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-    private static final String API_KEY = "AIzaSyDWi6VXrx2hVMdzeLhLCK8lPxUEAymLJGA";
-    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    private static final String OUT_JSON = "/json";
+                    SearchResult option = new SearchResult(place,
+                            ContextCompat.getDrawable(view.getContext(), android.R.drawable.ic_menu_search));
+                    search.addSearchable(option);
+                }
+                search.updateResults();
+            }
+        }
+    };
 
 
     @Override
@@ -145,14 +148,8 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
 
                     try {
                         search.clearSearchable();
-                        List<String> results = autocomplete(searchTerm);
-                        for (String place : results) {
-
-                            SearchResult option = new SearchResult(place,
-                                    ContextCompat.getDrawable(view.getContext(), android.R.drawable.ic_menu_search));
-                            search.addSearchable(option);
-                        }
-                        search.updateResults();
+                        Runnable mRunnable = new AutocompleteSearch(searchTerm, handler);
+                        mRunnable.run();
                     } catch (Exception e) {
                         Log.e("", "Something went wrong: ", e);
                     }
@@ -214,57 +211,6 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
             search.populateEditText(matches.get(0));
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-    public static ArrayList autocomplete(String input) {
-        ArrayList resultList = null;
-
-        HttpURLConnection conn = null;
-        StringBuilder jsonResults = new StringBuilder();
-        try {
-            StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
-            sb.append("?key=" + API_KEY);
-            sb.append("&components=country:US");
-            sb.append("&input=" + URLEncoder.encode(input, "utf8"));
-
-            URL url = new URL(sb.toString());
-            conn = (HttpURLConnection) url.openConnection();
-            InputStreamReader in = new InputStreamReader(conn.getInputStream());
-
-            // Load the results into a StringBuilder
-            int read;
-            char[] buff = new char[1024];
-            while ((read = in.read(buff)) != -1) {
-                jsonResults.append(buff, 0, read);
-            }
-        } catch (MalformedURLException e) {
-            Log.e("Autocomplete", "Error processing Places API URL", e);
-            return resultList;
-        } catch (IOException e) {
-            Log.e("Autocomplete", "Error connecting to Places API", e);
-            return resultList;
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-
-        try {
-            // Create a JSON object hierarchy from the results
-            JSONObject jsonObj = new JSONObject(jsonResults.toString());
-            JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
-
-            // Extract the Place descriptions from the results
-            resultList = new ArrayList(predsJsonArray.length());
-            for (int i = 0; i < predsJsonArray.length(); i++) {
-                System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
-                System.out.println("============================================================");
-                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
-            }
-        } catch (JSONException e) {
-            Log.e("Autocomplete", "Cannot process JSON results", e);
-        }
-
-        return resultList;
     }
 
 }

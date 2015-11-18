@@ -41,6 +41,7 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
     }
 
     public void addGeofences(Collection<Bar> bars){
+        mGeofenceList = new ArrayList<>();
         for(Bar  b:  bars){
             mGeofenceList.add(new Geofence.Builder()
                     .setRequestId("" + b.name)
