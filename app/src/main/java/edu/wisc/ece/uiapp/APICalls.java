@@ -37,7 +37,13 @@ public class APICalls {
         strs[1] = longitude;
         strs[2] = radius;
         hi.execute(strs);
-
+    }
+    public static void updatePopulation(int enter, int bid){
+        barPopulation bp = new barPopulation();
+        String strs[ ] = new String [2];
+        strs[0] = "" + enter;
+        strs[1] = "" + bid;
+        bp.execute(strs);
     }
     public static void fillEvents(JSONArray jsonArray) {
         MainActivity.events = new ArrayList<Event>();
@@ -200,10 +206,48 @@ public class APICalls {
             }
             return jsonArray;
         }
+
         @Override
         protected void onPostExecute(JSONArray res) {
             APICalls.fillBars(res);
 
+        }
+    }
+    protected static class barPopulation extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... strs) {
+            // Your code here
+            String temp1 = "";
+            int enter = Integer.parseInt(strs[0]);
+            int bid = Integer.parseInt(strs[1]);
+
+            //Construct an HTTP POST
+            String command = "";
+            HttpClient httpclient = new DefaultHttpClient();
+            if (enter==0) {
+                command = ("http://flock-app-dev2.elasticbeanstalk.com/api/enter_bar/" + bid);
+            }
+            else{
+                command = ("http://flock-app-dev2.elasticbeanstalk.com/api/leave_bar/" + bid);
+            }
+            HttpGet getVal = new HttpGet(command);
+            try {
+                HttpResponse response = httpclient.execute(getVal);
+                temp1 = EntityUtils.toString(response.getEntity());
+            }
+            catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("HTTP IO Exception.");
+                e.printStackTrace();
+            }
+            return 1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer res) {
+            super.onPostExecute(res);
         }
     }
 }

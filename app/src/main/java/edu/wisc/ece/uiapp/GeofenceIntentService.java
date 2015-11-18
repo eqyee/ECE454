@@ -28,6 +28,7 @@ public class GeofenceIntentService extends IntentService{
     private static Timer putTimer;
     private static TimerTask putTimerTask;
     private Handler handler = new Handler();
+    private static int currentGeofenceId;
 
     public GeofenceIntentService(){
         super(TAG);
@@ -36,26 +37,15 @@ public class GeofenceIntentService extends IntentService{
     @Override
     public void onCreate() {
         super.onCreate();
-
-        putTimerTask = new TimerTask() {
-            public void run() {
-                //use a handler to run a toast that shows the current timestamp
-                handler.post(new Runnable() {
-                    public void run() {
-                        //TODO: Put the API call here
-                    }
-                });
-            }
-        };
     }
     protected void onHandleIntent(Intent intent){
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
         int geofenceTransition = event.getGeofenceTransition();
+        final List<Geofence> triggeringGeofences = event.getTriggeringGeofences();
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER||
                 geofenceTransition==Geofence.GEOFENCE_TRANSITION_EXIT ) {
 
             // Get the geofences that were triggered. A single event can trigger multiple geofences.
-            List<Geofence> triggeringGeofences = event.getTriggeringGeofences();
 
             String geofenceTransitionDetails = getGeofenceTransitionDetails(
                     this,
@@ -69,6 +59,20 @@ public class GeofenceIntentService extends IntentService{
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
             if(putTimer == null){
                 putTimer = new Timer();
+                putTimerTask = new TimerTask() {
+                    public void run() {
+                        //use a handler to run a toast that shows the current timestamp
+                        if(GeofenceIntentService.currentGeofenceId == -1) {
+                            handler.post(new Runnable() {
+                                public void run() {
+                                    //TODO: PICK WHICH BAR TO INCREMENT
+                                    APICalls.updatePopulation(0, Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
+                                    GeofenceIntentService.currentGeofenceId = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
+                                }
+                            });
+                        }
+                    }
+                };
                 putTimer.schedule(putTimerTask, 120000);
             }
         }
@@ -76,6 +80,10 @@ public class GeofenceIntentService extends IntentService{
             if(putTimer != null){
                 putTimer.cancel();
                 putTimer = null;
+            }
+            if(currentGeofenceId != -1) {
+                APICalls.updatePopulation(1, currentGeofenceId);
+                currentGeofenceId = -1;
             }
         }
         return;
