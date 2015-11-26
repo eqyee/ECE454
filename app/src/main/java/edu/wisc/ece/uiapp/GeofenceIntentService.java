@@ -8,21 +8,27 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by Evan Yee on 11/2/2015.
  */
 public class GeofenceIntentService extends IntentService{
     protected static final String TAG = "GeofenceIntentService";
+    private static Timer putTimer;
+    private static TimerTask putTimerTask;
+    private Handler handler = new Handler();
+    private static int currentGeofenceId;
 
     public GeofenceIntentService(){
         super(TAG);
@@ -35,11 +41,11 @@ public class GeofenceIntentService extends IntentService{
     protected void onHandleIntent(Intent intent){
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
         int geofenceTransition = event.getGeofenceTransition();
+        final List<Geofence> triggeringGeofences = event.getTriggeringGeofences();
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER||
                 geofenceTransition==Geofence.GEOFENCE_TRANSITION_EXIT ) {
 
             // Get the geofences that were triggered. A single event can trigger multiple geofences.
-            List<Geofence> triggeringGeofences = event.getTriggeringGeofences();
 
             String geofenceTransitionDetails = getGeofenceTransitionDetails(
                     this,
@@ -48,7 +54,37 @@ public class GeofenceIntentService extends IntentService{
             );
 
             sendNotification(geofenceTransitionDetails);
+        }
 
+        if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
+            if(putTimer == null){
+                putTimer = new Timer();
+                putTimerTask = new TimerTask() {
+                    public void run() {
+                        //use a handler to run a toast that shows the current timestamp
+                        if(GeofenceIntentService.currentGeofenceId == -1) {
+                            handler.post(new Runnable() {
+                                public void run() {
+                                    //TODO: PICK WHICH BAR TO INCREMENT
+                                    APICalls.updatePopulation(0, Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
+                                    GeofenceIntentService.currentGeofenceId = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
+                                }
+                            });
+                        }
+                    }
+                };
+                putTimer.schedule(putTimerTask, 120000);
+            }
+        }
+        else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
+            if(putTimer != null){
+                putTimer.cancel();
+                putTimer = null;
+            }
+            if(currentGeofenceId != -1) {
+                APICalls.updatePopulation(1, currentGeofenceId);
+                currentGeofenceId = -1;
+            }
         }
         return;
     }

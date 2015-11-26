@@ -103,7 +103,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private void fillEvents() {
         String lat = Double.toString(CurrentLocation.latitude);
         String lon = Double.toString(CurrentLocation.longitude);
-        String rad = "10000000000000000";
+        String rad = "10000000";
         APICalls.getEvents(this, lat, lon, rad);
         APICalls.getBars(lat, lon, rad);
     }
