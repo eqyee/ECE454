@@ -29,6 +29,10 @@
                 android:resource="@xml/searchable" />
         </activity>
 
+        <activity android:name=".BarInfoActivity" >
+
+        </activity>
+
         <service android:name=".GeofenceIntentService" />
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyDWi6VXrx2hVMdzeLhLCK8lPxUEAymLJGA"/>
 

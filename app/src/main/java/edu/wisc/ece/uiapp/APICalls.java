@@ -30,6 +30,7 @@ import java.util.regex.Pattern;
 public class APICalls {
     private static JSONArray jsonBars;
     public static HashMap<Integer,Bar> barMap;
+
     public static void getEvents(Activity activity, String latitude, String longitude, String radius){
         eventQuery hi = new eventQuery(activity);
         String strs[ ] = new String [3];
@@ -136,6 +137,7 @@ public class APICalls {
                 try {
                     JSONObject tmp = bars.getJSONObject(i);
                     Bar bar = new Bar(tmp.getString("bar_name"));
+                    Log.d("Fill Bars", bar.name);
                     bar.setId(tmp.getInt("id"));
                     bar.setPatrons(tmp.getInt("patrons"));
                     String parse = tmp.getString("location");

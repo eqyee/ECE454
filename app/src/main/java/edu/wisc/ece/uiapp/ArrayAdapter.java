@@ -1,12 +1,17 @@
 package edu.wisc.ece.uiapp;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
@@ -16,6 +21,8 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 public class ArrayAdapter extends BaseExpandableListAdapter {
+
+    private final String LIKEABLE_STRING = "Cheers!";
 
     private final ArrayList<Event> events;
     public LayoutInflater inflater;
@@ -39,23 +46,54 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getChildView(int position, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-
+        final int eventPosition = position;
         final String eventItem = (String) getChild(position, childPosition);
+
         TextView text = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_child, null);
         }
         text = (TextView) convertView.findViewById(R.id.event_details_tv);
         text.setText(eventItem);
+
+        final View view = convertView;
         convertView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO From here we can launch a "view event info" tab if we want
-                Toast.makeText(activity, eventItem, Toast.LENGTH_SHORT).show();
+                Activity activity = (Activity) view.getContext();
+                Event currEvent = events.get(eventPosition);
+                int barId = currEvent.getBarId();
+                NewsFeed.launchBarInfo(view.getContext(), barId, eventPosition);
+
+                //ViewPager viewPager = (ViewPager) activity.findViewById(R.id.pager);
+                //viewPager.setCurrentItem(1);
             }
         });
+        setLikeableListeners(convertView);
         return convertView;
     }
+
+    private void setLikeableListeners(View convertView) {
+        ImageView likeImage = (ImageView) convertView.findViewById(R.id.likeable_image_child);
+        final TextView likeText = (TextView) convertView.findViewById(R.id.likeable_tv_child);
+
+        OnClickListener myListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(likeText.getText() == LIKEABLE_STRING) {
+                    likeText.setText("1");
+                }
+                else {
+                    likeText.setText(LIKEABLE_STRING);
+                }
+            }
+        };
+
+        likeImage.setOnClickListener(myListener);
+        likeText.setOnClickListener(myListener);
+    }
+
+
 
     @Override
     public int getChildrenCount(int position) {

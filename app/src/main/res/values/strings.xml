@@ -10,6 +10,7 @@
     <string name="likeable_tv_child_text">Cheers!</string>
     <string name="search_title">Search Location</string>
     <string name="search_hint">Search A Different Location</string>
+    <string name="bar_name">Default Name</string>
 
     <string name="geofence_transition_enter">Entered Geofence</string>
     <string name="geofence_transition_exit">Exited Geofence</string>

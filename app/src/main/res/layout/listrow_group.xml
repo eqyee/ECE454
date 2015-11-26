@@ -5,19 +5,19 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/groupItem_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="0dp"
-        android:textColor="#000000"
-        />
     <ImageView
         android:id="@+id/likeable_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/groupItem_tv"
         android:src="@drawable/ic_action_likeable" />
+
+    <TextView
+        android:id="@+id/groupItem_tv"
+        style="@style/NewsFeedSubject"
+        android:paddingLeft="0dp"
+        android:layout_toRightOf="@id/likeable_image"
+        />
+
 
 
 </RelativeLayout>
