@@ -29,6 +29,8 @@ public class GeofenceIntentService extends IntentService{
     private static TimerTask putTimerTask;
     private Handler handler = new Handler();
     private static int currentGeofenceId;
+    Handler delayHandler = new Handler();
+    int delay = 1000;
 
     public GeofenceIntentService(){
         super(TAG);
@@ -75,12 +77,22 @@ public class GeofenceIntentService extends IntentService{
                 };
                 putTimer.schedule(putTimerTask, 120000);
             }
+           AlgorithmsDet.LINESTORAGE = new AlgorithmsDet.LineObject[AlgorithmsDet.ARRAY_SIZE];
+            delayHandler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    AlgorithmsDet.createLineObject();
+                    AlgorithmsDet.inLine();
+                    delayHandler.postDelayed(this, delay);
+                }
+            }, delay);
         }
         else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
             if(putTimer != null){
                 putTimer.cancel();
                 putTimer = null;
             }
+            delayHandler.removeCallbacksAndMessages(null);
             if(currentGeofenceId != -1) {
                 APICalls.updatePopulation(1, currentGeofenceId);
                 currentGeofenceId = -1;
