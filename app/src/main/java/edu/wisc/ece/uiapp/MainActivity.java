@@ -75,6 +75,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             public void onPageSelected(int position) {
                 // on changing the page
                 // make respected tab selected
+                mAdapter.notifyDataSetChanged();
                 actionBar.setSelectedNavigationItem(position);
             }
 

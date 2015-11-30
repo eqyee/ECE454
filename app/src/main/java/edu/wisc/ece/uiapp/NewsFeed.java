@@ -5,28 +5,46 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
+import java.util.ArrayList;
+
 public class NewsFeed extends Fragment {
 
     public static final String EVENT_POSITION = "EventId";
     public static final String BAR_ID = "BarId";
 
+    public static SwipeRefreshLayout mSwipeRefreshLayout;
     static ArrayAdapter adapter;
+
+    private ExpandableListView listView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_newsfeed, container, false);
 
-        final ExpandableListView listView = (ExpandableListView) rootView.findViewById(R.id.listView);
+        listView = (ExpandableListView) rootView.findViewById(R.id.listView);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById(R.id.newsfeed_swipe_refresh_layout);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
+
         adapter = new ArrayAdapter(getActivity(), MainActivity.events);
         listView.setAdapter(adapter);
-
+        final View rV = rootView;
         listView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             // Keep track of previous expanded parent
             int previousGroup = -1;
@@ -35,11 +53,14 @@ public class NewsFeed extends Fragment {
             public void onGroupExpand(int groupPosition) {
                 // Collapse previous parent if expanded.
                 if ((previousGroup != -1) && (groupPosition != previousGroup)) {
+                    ExpandableListView listView = (ExpandableListView) rV.findViewById(R.id.listView);
                     listView.collapseGroup(previousGroup);
                 }
                 previousGroup = groupPosition;
             }
         });
+
+
 
         return rootView;
     }
@@ -62,5 +83,18 @@ public class NewsFeed extends Fragment {
 
         //ViewPager viewPager = (ViewPager) activity.findViewById(R.id.pager);
         //viewPager.setCurrentItem(1);
+    }
+
+    private void refreshContent() {
+        String radius = "100";
+
+        MainActivity.events = new ArrayList<Event>();
+        MainActivity.events.clear();
+        adapter.notifyDataSetInvalidated();
+
+        adapter.notifyDataSetChanged();
+
+        // APICalls.getEvents(getActivity(), Double.toString(MainActivity.myLocation.latitude), Double.toString(MainActivity.myLocation.longitude), radius);
+        APICalls.getEvents(getActivity(), Double.toString(-89.4031832000000009), Double.toString(43.0683683999999971), radius);
     }
 }

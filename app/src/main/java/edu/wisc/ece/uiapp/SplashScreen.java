@@ -42,10 +42,7 @@ public class SplashScreen extends Activity {
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
             MainActivity.myLocation = new CurrentLocation(latitude, longitude);
-        }catch (Exception e){
-
-        }
-
+        }catch (Exception e){}
 
         String lat = Double.toString(CurrentLocation.latitude);
         String lon = Double.toString(CurrentLocation.longitude);
