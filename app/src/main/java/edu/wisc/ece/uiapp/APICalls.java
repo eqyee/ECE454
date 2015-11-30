@@ -123,6 +123,8 @@ public class APICalls {
             NewsFeed.eventsListDataHasChanged();
             ExpandableListView lview = (ExpandableListView) mActivity.findViewById(R.id.listView);
             ((BaseExpandableListAdapter)lview.getExpandableListAdapter()).notifyDataSetChanged();
+            NewsFeed.mSwipeRefreshLayout.setRefreshing(false);
+
         }
     }
     public static void getBars(String latitude, String longitude, String radius){

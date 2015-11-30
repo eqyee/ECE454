@@ -27,6 +27,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private ViewPager viewPager;
     private TabsPagerAdapter mAdapter;
     private ActionBar actionBar;
+
     // Tab titles
     private String[] tabs = { "News Feed",  "Profile", "Heat Map", "Inside/Outside" };
     public static CurrentLocation myLocation;
@@ -37,11 +38,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         setContentView(R.layout.activity_main);
 
         // Initilization
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        actionBar = getActionBar();
         mAdapter = new TabsPagerAdapter(getFragmentManager());
+        setUpPager();
+        setUpActionbar();
 
-        viewPager.setAdapter(mAdapter);
+        //events = new ArrayList<Event>();
+
+        //fillEvents();
+        //no clue whats going on here?
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+    }
+
+    private void setUpActionbar() {
+        actionBar = getActionBar();
         actionBar.setHomeButtonEnabled(false);
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
@@ -49,6 +60,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         for (String tab_name : tabs) {
             actionBar.addTab(actionBar.newTab().setText(tab_name).setTabListener(this));
         }
+    }
+
+    private void setUpPager() {
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager.setAdapter(mAdapter);
 
         /**
          * on swiping the viewpager make respective tab selected
@@ -59,33 +75,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             public void onPageSelected(int position) {
                 // on changing the page
                 // make respected tab selected
+                mAdapter.notifyDataSetChanged();
                 actionBar.setSelectedNavigationItem(position);
             }
 
             @Override
             public void onPageScrolled(int arg0, float arg1, int arg2) {
+                //here we will want to do the refresh events
             }
 
             @Override
             public void onPageScrollStateChanged(int arg0) {
             }
         });
-        events = new ArrayList<Event>();
-
-        fillEvents();
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-
-        try {
-            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            double longitude = location.getLongitude();
-            double latitude = location.getLatitude();
-            myLocation = new CurrentLocation(latitude, longitude);
-        }catch (Exception e){
-
-        }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         MenuInflater inflater = getMenuInflater();
@@ -100,13 +104,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     }
 
     // Will need to do some sort of database call to fill the bars later.
-    private void fillEvents() {
+   /* private void fillEvents() {
         String lat = Double.toString(CurrentLocation.latitude);
         String lon = Double.toString(CurrentLocation.longitude);
         String rad = "10000000";
         APICalls.getEvents(this, lat, lon, rad);
         APICalls.getBars(lat, lon, rad);
-    }
+    }*/
 
     @Override
     public void onTabReselected(Tab tab, FragmentTransaction ft) {
