@@ -86,7 +86,7 @@ public class NewsFeed extends Fragment {
     }
 
     private void refreshContent() {
-        String radius = "100";
+        String radius = "10000000000";
 
         MainActivity.events = new ArrayList<Event>();
         MainActivity.events.clear();

@@ -15,13 +15,10 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /*My thinking with this is to get the API call going right away. It will display a splash screen
 * until the Events are initially loaded the first time. This is essential since the news feed wants
@@ -41,8 +38,11 @@ public class SplashScreen extends Activity {
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
             double longitude = location.getLongitude();
             double latitude = location.getLatitude();
+            Log.e("TEST", "Longitude " + longitude + ": Latitude " + latitude );
             MainActivity.myLocation = new CurrentLocation(latitude, longitude);
-        }catch (Exception e){}
+        }catch (Exception e){
+            Log.e("Location Manager", "Some issue with LocationManager");
+        }
 
         String lat = Double.toString(CurrentLocation.latitude);
         String lon = Double.toString(CurrentLocation.longitude);
