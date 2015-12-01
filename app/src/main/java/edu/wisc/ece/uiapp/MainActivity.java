@@ -26,7 +26,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private ActionBar actionBar;
 
     // Tab titles
-    private String[] tabs = { "News Feed",  "Profile", "Heat Map", "Inside/Outside" };
+    private String[] tabs = { "News Feed",  "Heat Map", "Profile", "Inside/Outside" };
     public static CurrentLocation myLocation;
 
     public static boolean inside = true;

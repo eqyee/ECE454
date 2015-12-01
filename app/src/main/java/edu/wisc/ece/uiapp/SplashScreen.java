@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.MapView;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -54,6 +56,20 @@ public class SplashScreen extends Activity {
         strs[2] = rad;
         new loadInitialEvents().execute(strs);
         APICalls.getBars(lat, lon, rad);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MapView mv = new MapView(getApplicationContext());
+                    mv.onCreate(null);
+                    mv.onPause();
+                    mv.onDestroy();
+                }catch (Exception ignored){
+
+                }
+            }
+        }).start();
     }
 
     protected class loadInitialEvents extends AsyncTask<String, Void, JSONArray> {

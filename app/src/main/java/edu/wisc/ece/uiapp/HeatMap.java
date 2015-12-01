@@ -110,6 +110,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
         if(this.map != null)
             updateHeatMap();
     }
+
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;

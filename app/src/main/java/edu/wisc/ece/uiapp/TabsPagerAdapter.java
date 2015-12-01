@@ -23,10 +23,10 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
                 return new NewsFeed();
             case 1:
                 // News Feed fragment activity
-                return new Profile();
+                return new HeatMap();
             case 2:
                 // Heat Map fragment activity
-                return new HeatMap();
+                return new Profile();
             case 3:
                 //
                 return new InsideOutside();

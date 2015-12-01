@@ -2,6 +2,7 @@ package edu.wisc.ece.uiapp;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 public class BarInfoActivity extends Activity {
