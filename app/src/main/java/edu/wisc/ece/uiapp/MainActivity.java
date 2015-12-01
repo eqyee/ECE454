@@ -5,9 +5,6 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
-import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
@@ -31,6 +28,8 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     // Tab titles
     private String[] tabs = { "News Feed",  "Profile", "Heat Map", "Inside/Outside" };
     public static CurrentLocation myLocation;
+
+    public static boolean inside = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.TileOverlay;
 import com.google.android.gms.maps.model.TileOverlayOptions;
@@ -31,6 +32,7 @@ import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -44,6 +46,13 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
     private com.quinny898.library.persistentsearch.SearchBox search;
     private Geocoder geocoder;
     private GoogleMap map;
+
+    HashMap<Marker, Integer> markers;
+    ArrayList<Marker> markerArray;
+
+    public static final String EVENT_POSITION = "EventId";
+    public static final String BAR_ID = "BarId";
+
     private Handler handler = new Handler(Looper.getMainLooper()){
         @Override
         public void handleMessage(Message inputMessage){
@@ -104,16 +113,32 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
+        map.setMyLocationEnabled(true);
         updateHeatMap();
         LatLng center = new LatLng(CurrentLocation.latitude, CurrentLocation.longitude);
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 15.0f));
+        placePins();
+
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent i = new Intent(view.getContext(), BarInfoActivity.class);
+
+                i.putExtra(BAR_ID, Integer.toString(markers.get(marker)));
+                i.putExtra(EVENT_POSITION, -1);
+                startActivity(i);
+            }
+        });
+
     }
     private void updateHeatMap(){
         List<LatLng> heatData = getHeatData();
-        mProvider = new HeatmapTileProvider.Builder()
-                .data(heatData)
-                .build();
-        mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+        if(heatData.size() > 0) {
+            mProvider = new HeatmapTileProvider.Builder()
+                    .data(heatData)
+                    .build();
+            mOverlay = map.addTileOverlay(new TileOverlayOptions().tileProvider(mProvider));
+        }
     }
     private List<LatLng> getHeatData(){
         ArrayList<LatLng> heatData = new ArrayList<>();
@@ -125,6 +150,22 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
             }
         }
         return heatData;
+    }
+    private void placePins(){
+        if(markerArray != null && markerArray.size() > 0) {
+            for (Marker curr : markerArray) {
+                curr.remove();
+            }
+        }
+        markers = new HashMap<>();
+        markerArray = new ArrayList<>();
+        for(Bar bar: APICalls.barMap.values()){
+            Marker marker = map.addMarker(new MarkerOptions()
+                    .position(bar.getLocation())
+                    .title(bar.getName()));
+            markers.put(marker, bar.getId());
+            markerArray.add(marker);
+        }
     }
     private void setupSearchBar(){
         search.setLogoText("Search Bars");
@@ -145,7 +186,6 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
             public void onSearchTermChanged(String searchTerm) {
 
                 if (searchTerm != null) {
-
                     try {
                         search.clearSearchable();
                         Runnable mRunnable = new AutocompleteSearch(searchTerm, handler);
@@ -167,9 +207,11 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
                     LatLng center = new LatLng(address.getLatitude(), address.getLongitude());
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 12.0f));
 
+                    /*
                     map.addMarker(new MarkerOptions()
                             .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                             .position(center));
+                    */
                     updateHeatMap();
                 } catch (Exception e) {
                     Log.e("", "Something went wrong: ", e);
@@ -186,9 +228,11 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
                     LatLng center = new LatLng(address.getLatitude(), address.getLongitude());
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(center, 17));
 
+                    /*
                     map.addMarker(new MarkerOptions()
                             .anchor(0.0f, 1.0f) // Anchors the marker on the bottom left
                             .position(center));
+                    */
                     updateHeatMap();
                 } catch (Exception e) {
                     Log.e("", "Something went wrong: ", e);

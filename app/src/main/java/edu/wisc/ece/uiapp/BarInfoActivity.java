@@ -20,7 +20,9 @@ public class BarInfoActivity extends Activity {
         /*Grab the bundle from the intent that started this activity. Used to get barID and EventID*/
         Bundle b = this.getIntent().getExtras();
         barId = Integer.parseInt(b.getString(NewsFeed.BAR_ID));
-        eventInfo = Integer.parseInt(b.getString(NewsFeed.EVENT_POSITION));
+        if(b.getString(NewsFeed.EVENT_POSITION) != null){
+            eventInfo = Integer.parseInt(b.getString(NewsFeed.EVENT_POSITION));
+        }
 
         getViews();
         currBar = APICalls.barMap.get(barId);

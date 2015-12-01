@@ -80,7 +80,9 @@ public class AutocompleteSearch implements Runnable {
             for (int i = 0; i < predsJsonArray.length(); i++) {
                 System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
                 System.out.println("============================================================");
-                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+                if(!input.equals(predsJsonArray.getJSONObject(i).getString("description"))) {
+                    resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+                }
             }
         } catch (JSONException e) {
             Log.e("Autocomplete", "Cannot process JSON results", e);
