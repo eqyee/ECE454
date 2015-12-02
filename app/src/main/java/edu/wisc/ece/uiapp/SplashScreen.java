@@ -55,7 +55,6 @@ public class SplashScreen extends Activity {
         strs[1] = lon;
         strs[2] = rad;
         new loadInitialEvents().execute(strs);
-        APICalls.getBars(lat, lon, rad);
 
         new Thread(new Runnable() {
             @Override
@@ -70,8 +69,6 @@ public class SplashScreen extends Activity {
                 }
             }
         }).start();
-
-
 
     }
 
@@ -99,10 +96,10 @@ public class SplashScreen extends Activity {
                 radius = "1000";
             }
             radius = "1000000000000";
-            //Construct an HTTP POST
+
+            //Construct an HTTP POST for getting bars
             HttpClient httpclient = new DefaultHttpClient();
-            String command = ("http://flock-app-dev2.elasticbeanstalk.com/api/eventloc/?" +
-                    "location=POINT(" + latitude + "%20" + longitude + ")&radius=" + radius);
+            String command = ("http://flock-app-dev2.elasticbeanstalk.com/api/bars/");
             HttpGet getVal = new HttpGet(command);
             try {
                 HttpResponse response = httpclient.execute(getVal);
@@ -115,6 +112,29 @@ public class SplashScreen extends Activity {
                 e.printStackTrace();
             }
             JSONArray jsonArray;
+            try {
+                jsonArray = new JSONArray(temp1);
+            } catch (JSONException e) {
+                System.out.println("Error in JSON decoding");
+                e.printStackTrace();
+                jsonArray = new JSONArray();
+            }
+            APICalls.fillBars(jsonArray);
+
+            //Construct an HTTP POST for getting events
+            command = ("http://flock-app-dev2.elasticbeanstalk.com/api/eventloc/?" +
+                    "location=POINT(" + latitude + "%20" + longitude + ")&radius=" + radius);
+            getVal = new HttpGet(command);
+            try {
+                HttpResponse response = httpclient.execute(getVal);
+                temp1 = EntityUtils.toString(response.getEntity());
+            }
+            catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("HTTP IO Exception.");
+                e.printStackTrace();
+            }
             try {
                 jsonArray = new JSONArray(temp1);
                 Log.d("JSONOUTPUT", jsonArray.toString(0));

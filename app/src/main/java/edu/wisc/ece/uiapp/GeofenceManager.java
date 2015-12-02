@@ -28,6 +28,7 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
     private List<Geofence> mGeofenceList;
     private Context applicationContext;
     private PendingIntent mGeofencePendingIntent;
+    boolean waiting = false;
 
     public GeofenceManager(Context context){
         mGoogleApiClient = new GoogleApiClient.Builder(context)
@@ -58,9 +59,12 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
     public void enableGeofence(){
         if (!mGoogleApiClient.isConnected()) {
             Toast.makeText(applicationContext,"GoogleAPIClient not connected", Toast.LENGTH_SHORT).show();
+            Log.w("GeofenceManager", "Didn't enable Geofences");
+            waiting = true;
             return;
         }
         try{
+            Log.w("EnableGeofence", "Enabled geofences");
             LocationServices.GeofencingApi.addGeofences(
                     mGoogleApiClient,
                     getGeofenceRequest(),
@@ -114,28 +118,31 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
 
     public void onStart(){
         if(mGoogleApiClient.isConnected()){
-            Log.i(TAG, "Already Connected");
+            Log.w(TAG, "Already Connected");
         } else {
-            Log.i(TAG, "Connecting Client");
+            Log.w(TAG, "Connecting Client");
             mGoogleApiClient.connect();
         }
     }
 
     public void onStop() {
-        Log.i(TAG, "Disconnecting Client");
+        Log.w(TAG, "Disconnecting Client");
         mGoogleApiClient.disconnect();
     }
 
     @Override
     public void onConnected(Bundle connectionHint){
-        Log.i(TAG, "Connected to GoogleApiClient");
+        if(waiting)
+            enableGeofence();
+        waiting = false;
+        Log.w(TAG, "Connected to GoogleApiClient");
     }
     @Override
     public void onConnectionSuspended(int cause){
-        Log.i(TAG, "Connection suspended");
+        Log.w(TAG, "Connection suspended");
     }
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
+        Log.e(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
 }

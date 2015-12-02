@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.widget.SearchView;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 
 @SuppressLint("NewApi")
@@ -26,15 +27,26 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     private ActionBar actionBar;
 
     // Tab titles
-    private String[] tabs = { "News Feed",  "Heat Map", "Profile", "Inside/Outside" };
+    private String[] tabs = { "News Feed",  "Heat Map", "Profile" };
     public static CurrentLocation myLocation;
 
     public static boolean inside = true;
+
+    public static InsideOutside insideOutsideManager;
+    public static GeofenceManager mGeofenceManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        insideOutsideManager = new InsideOutside(this);
+        mGeofenceManager = new GeofenceManager(this);
+        Collection<Bar> barList = APICalls.barMap.values();
+        mGeofenceManager.onStart();
+        mGeofenceManager.addGeofences(barList);
+        mGeofenceManager.enableGeofence();
 
         // Initilization
         mAdapter = new TabsPagerAdapter(getFragmentManager());

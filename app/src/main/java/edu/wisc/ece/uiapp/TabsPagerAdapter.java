@@ -9,7 +9,7 @@ import android.support.v13.app.FragmentPagerAdapter;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
-    private int numTabs = 4;
+    private int numTabs = 3;
     public TabsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
@@ -27,9 +27,6 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
             case 2:
                 // Heat Map fragment activity
                 return new Profile();
-            case 3:
-                //
-                return new InsideOutside();
         }
 
         return null;

@@ -20,6 +20,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -215,7 +216,10 @@ public class APICalls {
         @Override
         protected void onPostExecute(JSONArray res) {
             APICalls.fillBars(res);
-
+            Collection<Bar> barList = barMap.values();
+            MainActivity.mGeofenceManager.onStart();
+            MainActivity.mGeofenceManager.addGeofences(barList);
+            MainActivity.mGeofenceManager.enableGeofence();
         }
     }
     protected static class barPopulation extends AsyncTask<String, Void, Integer> {

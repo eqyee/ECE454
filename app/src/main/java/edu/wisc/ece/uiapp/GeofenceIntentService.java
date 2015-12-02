@@ -88,7 +88,7 @@ public class GeofenceIntentService extends IntentService{
                 };
                 putTimer.schedule(putTimerTask, 10000);
             }
-           AlgorithmsDet.LINESTORAGE = new AlgorithmsDet.LineObject[AlgorithmsDet.ARRAY_SIZE];
+            AlgorithmsDet.LINESTORAGE = new AlgorithmsDet.LineObject[AlgorithmsDet.ARRAY_SIZE];
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -100,6 +100,8 @@ public class GeofenceIntentService extends IntentService{
                     delayHandler.postDelayed(this, delay);
                 }
             }, delay);
+           //TODO: FIX THIS
+           MainActivity.insideOutsideManager.start();
         }
         else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
             Log.d("Leaving!", Integer.toString(GeofenceIntentService.currentGeofenceId));
@@ -113,6 +115,7 @@ public class GeofenceIntentService extends IntentService{
                 APICalls.updatePopulation(1, 0, currentGeofenceId);
                 GeofenceIntentService.currentGeofenceId = -1;
             }
+            MainActivity.insideOutsideManager.stop();
         }
         return;
     }
