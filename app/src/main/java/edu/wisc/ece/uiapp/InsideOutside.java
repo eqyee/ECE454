@@ -25,7 +25,7 @@ public class InsideOutside extends Fragment  implements LocationListener {
 
     protected static final String TAG = "MainActivity";
     protected LocationManager locationManager;
-    private GeofenceManager mGeofenceManager;
+    private static GeofenceManager mGeofenceManager;
     private double currentLatitude;
     private double currentLongitude;
     private double currentUncertainty;
@@ -107,7 +107,11 @@ public class InsideOutside extends Fragment  implements LocationListener {
      */
     @Override
     public void onLocationChanged(Location location) {
+        //TODO: Timer error
         timer.cancel();
+        timer.purge();
+        timer = new Timer();
+        initializeTimer();
         currentLatitude = location.getLatitude();
         currentLongitude = location.getLongitude();
         currentUncertainty = location.getAccuracy();
@@ -126,7 +130,7 @@ public class InsideOutside extends Fragment  implements LocationListener {
     @Override
     public void onProviderDisabled(String provider) {}
 
-    public void enableGeofences(){
+    public static void enableGeofences(){
         HashMap tmp = APICalls.barMap;
         Collection<Bar> barList = tmp.values();
         mGeofenceManager.addGeofences(barList);
@@ -149,14 +153,21 @@ public class InsideOutside extends Fragment  implements LocationListener {
             try {
                 locationManager.removeUpdates(this);
             } catch(SecurityException se){}
+            locTimer.cancel();
+            locTimer.purge();
+            locTimer = new Timer();
+            initializeLocTimer();
             locTimer.schedule(locTimerTask, 180000);
         }
         else if(currentUncertainty > 300){
             try {
                 locationManager.removeUpdates(this);
             } catch(SecurityException se){}
-            locTimer.schedule(locTimerTask, 180000);
-        }
+            locTimer.cancel();
+            locTimer.purge();
+            locTimer = new Timer();
+            initializeLocTimer();
+            locTimer.schedule(locTimerTask, 180000);        }
         else{
             insideorout.setText("You are most likely inside");
         }

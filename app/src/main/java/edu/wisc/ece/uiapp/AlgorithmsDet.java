@@ -45,7 +45,7 @@ public class AlgorithmsDet {
                 }
                 try {
                     if (LINESTORAGE[runner].step_count - LINESTORAGE[sec_runner].step_count < 4) {
-                        Log.d("Good!", Integer.toString(mistakes));
+
                         total += 1;
                         mistakes_in_row = 0;
 
@@ -58,7 +58,6 @@ public class AlgorithmsDet {
                     }
                 }
                 catch (NullPointerException e){
-                    Log.d("NPE", "Broken");
                     break;
                 }
 

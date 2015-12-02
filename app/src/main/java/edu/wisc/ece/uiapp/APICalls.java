@@ -39,11 +39,12 @@ public class APICalls {
         strs[2] = radius;
         hi.execute(strs);
     }
-    public static void updatePopulation(int enter, int bid){
+    public static void updatePopulation(int enter, int wait, int bid){
         barPopulation bp = new barPopulation();
-        String strs[ ] = new String [2];
+        String strs[ ] = new String [3];
         strs[0] = "" + enter;
         strs[1] = "" + bid;
+        strs[2] = "" + wait;
         bp.execute(strs);
     }
     public static void fillEvents(JSONArray jsonArray) {
@@ -225,15 +226,16 @@ public class APICalls {
             String temp1 = "";
             int enter = Integer.parseInt(strs[0]);
             int bid = Integer.parseInt(strs[1]);
+            int wait = Integer.parseInt(strs[2]);
 
             //Construct an HTTP POST
             String command = "";
             HttpClient httpclient = new DefaultHttpClient();
             if (enter==0) {
-                command = ("http://flock-app-dev2.elasticbeanstalk.com/api/enter_bar/" + bid);
+                command = ("http://flock-app-dev2.elasticbeanstalk.com/api/enter_location/" + bid);
             }
             else{
-                command = ("http://flock-app-dev2.elasticbeanstalk.com/api/leave_bar/" + bid);
+                command = ("http://flock-app-dev2.elasticbeanstalk.com/api/leave_location/" + bid);
             }
             HttpGet getVal = new HttpGet(command);
             try {
@@ -254,4 +256,5 @@ public class APICalls {
             super.onPostExecute(res);
         }
     }
+
 }

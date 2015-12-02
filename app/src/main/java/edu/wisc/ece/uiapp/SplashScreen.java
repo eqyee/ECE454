@@ -70,6 +70,9 @@ public class SplashScreen extends Activity {
                 }
             }
         }).start();
+
+
+
     }
 
     protected class loadInitialEvents extends AsyncTask<String, Void, JSONArray> {

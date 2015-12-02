@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
@@ -28,9 +29,13 @@ public class GeofenceIntentService extends IntentService{
     private static Timer putTimer;
     private static TimerTask putTimerTask;
     private Handler handler = new Handler();
-    private static int currentGeofenceId;
+    private static int currentGeofenceId = -1;
     Handler delayHandler = new Handler();
-    int delay = 1000;
+    public static int waitTime;
+    private final int delay = 5000;
+    private static final int BUFFSIZE = 15;
+    private static int [] lineTime = new int [BUFFSIZE];
+    private static int pointer = 0;
 
     public GeofenceIntentService(){
         super(TAG);
@@ -61,46 +66,77 @@ public class GeofenceIntentService extends IntentService{
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
             if(putTimer == null){
                 putTimer = new Timer();
+                Log.d("Entering", triggeringGeofences.get(0).getRequestId());
+                Log.d("Entering1GeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
                 putTimerTask = new TimerTask() {
                     public void run() {
                         //use a handler to run a toast that shows the current timestamp
                         if(GeofenceIntentService.currentGeofenceId == -1) {
+                            //TODO: Ask about this.
+                            GeofenceIntentService.currentGeofenceId = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
+                            Log.d("Entering3GeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
                             handler.post(new Runnable() {
                                 public void run() {
-                                    //TODO: PICK WHICH BAR TO INCREMENT
-                                    APICalls.updatePopulation(0, Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
+                                    Log.d("Entering2GeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
+                                    //TODO: DECIDE WHEN INSIDE USING INSIDE/OUTSIDE
+                                    APICalls.updatePopulation(0, getWaitTime(), Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
                                     GeofenceIntentService.currentGeofenceId = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
                                 }
                             });
                         }
                     }
                 };
-                putTimer.schedule(putTimerTask, 120000);
+                putTimer.schedule(putTimerTask, 10000);
             }
            AlgorithmsDet.LINESTORAGE = new AlgorithmsDet.LineObject[AlgorithmsDet.ARRAY_SIZE];
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     AlgorithmsDet.createLineObject();
-                    AlgorithmsDet.inLine();
+                    waitTime = AlgorithmsDet.inLine();
+                    pointer = pointer % BUFFSIZE;
+                    lineTime[pointer] = waitTime;
+                    pointer++;
                     delayHandler.postDelayed(this, delay);
                 }
             }, delay);
         }
         else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
+            Log.d("Leaving!", Integer.toString(GeofenceIntentService.currentGeofenceId));
             if(putTimer != null){
                 putTimer.cancel();
                 putTimer = null;
             }
             delayHandler.removeCallbacksAndMessages(null);
-            if(currentGeofenceId != -1) {
-                APICalls.updatePopulation(1, currentGeofenceId);
-                currentGeofenceId = -1;
+            Log.d("LeavingGeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
+            if(GeofenceIntentService.currentGeofenceId != -1) {
+                APICalls.updatePopulation(1, 0, currentGeofenceId);
+                GeofenceIntentService.currentGeofenceId = -1;
             }
         }
         return;
     }
-
+    public int getWaitTime(){
+        double sum = 0;
+        double sumsq = 0;
+        for (int i = 0; i< BUFFSIZE; i++){
+            sum+=lineTime[i];
+            sumsq+=lineTime[i]*lineTime[i];
+        }
+        double mean = sum/BUFFSIZE;
+        double variance = sumsq/BUFFSIZE - mean*mean;
+        double stdDeviation = Math.sqrt(variance);
+        int total = 1;
+        int value = 0;
+        for (int i =0; i<BUFFSIZE; i++){
+            //1 std deviation
+            if(lineTime[i]>mean-1*stdDeviation && lineTime[i] < mean+1*stdDeviation){
+                total++;
+                value+=lineTime[i];
+            }
+        }
+        return value/total;
+    }
     //The following was modified from google geofence sample
     // https://github.com/googlesamples/android-play-location/blob/master/Geofencing/app/src/main/java/com/google/android/gms/location/sample/geofencing/GeofenceTransitionsIntentService.java
     private String getGeofenceTransitionDetails(

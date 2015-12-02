@@ -43,8 +43,10 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
     public void addGeofences(Collection<Bar> bars){
         mGeofenceList = new ArrayList<>();
         for(Bar  b:  bars){
+            Log.d("Geofence Added", Integer.toString(b.getId()));
             mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId("" + b.name)
+
+                    .setRequestId("" + b.getId())
                             //set static radius to be 100
                     .setCircularRegion(b.getLocation().latitude, b.getLocation().longitude, 100.0f)
                     .setExpirationDuration(100000000)
