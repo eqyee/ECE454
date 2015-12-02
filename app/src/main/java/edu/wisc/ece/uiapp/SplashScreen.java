@@ -98,7 +98,7 @@ public class SplashScreen extends Activity {
             if (radius == null){
                 radius = "1000";
             }
-
+            radius = "1000000000000";
             //Construct an HTTP POST
             HttpClient httpclient = new DefaultHttpClient();
             String command = ("http://flock-app-dev2.elasticbeanstalk.com/api/eventloc/?" +
