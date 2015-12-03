@@ -17,6 +17,13 @@
         android:paddingLeft="0dp"
         android:layout_toRightOf="@id/likeable_image"
         />
+    <TextView
+        android:id="@+id/eventTime"
+        style="@style/EventTime"
+        android:paddingLeft="0dp"
+        android:layout_toRightOf="@id/likeable_image"
+        android:layout_below="@id/groupItem_tv"
+        />
 
 
 

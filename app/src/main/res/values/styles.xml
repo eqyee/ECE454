@@ -12,15 +12,25 @@
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textStyle">italic</item>
     </style>
-
-    <style name="NewsFeedSubject" parent="CodeFont">
+    <style name="LoadingFont">
+        <item name="android:textColor">#ffffff</item>
         <item name="android:textSize">20sp</item>
     </style>
-
+    <style name="SplashTitleFont">
+        <item name="android:textColor">#ffffff</item>
+    </style>
+    <style name="NewsFeedSubject" parent="CodeFont">
+        <item name="android:textSize">17sp</item>
+    </style>
+    <style name="EventTime" parent="CodeFont">
+        <item name="android:textSize">13sp</item>
+    </style>
     <style name="NewsFeedItems" parent="CodeFont">
         <item name="android:textSize">15sp</item>
     </style>
-
+    <style name="SplashTitle" parent="SplashTitleFont">
+        <item name="android:textSize">80sp</item>
+    </style>
     <style name="LikeableText" parent="CodeFont">
         <item name="android:textSize">15sp</item>
     </style>

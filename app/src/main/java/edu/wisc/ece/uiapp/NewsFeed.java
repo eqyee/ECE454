@@ -86,7 +86,6 @@ public class NewsFeed extends Fragment {
     }
 
     private void refreshContent() {
-        String radius = "10000000000";
 
         MainActivity.events = new ArrayList<Event>();
         MainActivity.events.clear();
@@ -95,6 +94,6 @@ public class NewsFeed extends Fragment {
         adapter.notifyDataSetChanged();
 
         // APICalls.getEvents(getActivity(), Double.toString(MainActivity.myLocation.latitude), Double.toString(MainActivity.myLocation.longitude), radius);
-        APICalls.getEvents(getActivity(), Double.toString(-89.4031832000000009), Double.toString(43.0683683999999971), radius);
+        APICalls.getEvents(getActivity(), Double.toString(-89.4031832000000009), Double.toString(43.0683683999999971), MainActivity.RADIUS);
     }
 }

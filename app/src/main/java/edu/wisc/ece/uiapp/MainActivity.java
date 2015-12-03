@@ -31,7 +31,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static CurrentLocation myLocation;
 
     public static boolean inside = true;
-
+    public static final String RADIUS = "3000";
     public static InsideOutside insideOutsideManager;
     public static GeofenceManager mGeofenceManager;
 

@@ -15,6 +15,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
+import org.joda.time.*;
+import org.joda.time.format.*;
+
+
 
 import org.w3c.dom.Text;
 
@@ -131,8 +135,31 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
             convertView = inflater.inflate(R.layout.listrow_group, null);
         }
         Event event = (Event) getGroup(position);
+        String pattern = "yyyy-MM-dd'T'HH:mm:ssZ";
+        DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+        DateTimeFormatter endF = DateTimeFormat.forPattern("hh:mm a");
+        DateTimeFormatter startF = DateTimeFormat.forPattern("hh:mm a");
+        DateTime start = dtf.parseDateTime(event.getStartTime());
+        DateTime end = dtf.parseDateTime(event.getEndTime());
+        DateTime now = new DateTime();
+
+
+        if( now.getDayOfYear() != start.getDayOfYear()){
+            startF = DateTimeFormat.forPattern("MMM dd: hh:mm a");
+        }
+        String startS = start.toString(startF);
+        String endS = end.toString(endF);
+        if(now.isAfter(start)){
+            startS = "Now";
+        }
+
+
+
+
         TextView itemTextView = (TextView)convertView.findViewById(R.id.groupItem_tv);
-        itemTextView.setText(event.getSubject());
+        TextView eventTextView = (TextView)convertView.findViewById(R.id.eventTime);
+        itemTextView.setText(APICalls.barMap.get(event.getBarId()).getName() + " - " + event.getSubject());
+        eventTextView.setText(startS + " - " + endS);
         /*itemTextView.setOnClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {

@@ -48,12 +48,14 @@ public class SplashScreen extends Activity {
 
         String lat = Double.toString(CurrentLocation.latitude);
         String lon = Double.toString(CurrentLocation.longitude);
-        String rad = "10000000";
         //------------------------------------------------------------------------------------------
         String strs[ ] = new String [3];
+        Log.d("LAT", lat);
+        Log.d("LON", lon);
+
         strs[0] = lat;
         strs[1] = lon;
-        strs[2] = rad;
+
         new loadInitialEvents().execute(strs);
 
         new Thread(new Runnable() {
@@ -85,17 +87,7 @@ public class SplashScreen extends Activity {
             String temp1 = "";
             String latitude = strs[0];
             String longitude = strs[1];
-            String radius;
-            try{
-                radius = strs[2];
-            }
-            catch (NullPointerException e){
-                radius = "1000";
-            }
-            if (radius == null){
-                radius = "1000";
-            }
-            radius = "1000000000000";
+
 
             //Construct an HTTP POST for getting bars
             HttpClient httpclient = new DefaultHttpClient();
@@ -123,7 +115,8 @@ public class SplashScreen extends Activity {
 
             //Construct an HTTP POST for getting events
             command = ("http://flock-app-dev2.elasticbeanstalk.com/api/eventloc/?" +
-                    "location=POINT(" + latitude + "%20" + longitude + ")&radius=" + radius);
+                    "location=POINT(" + longitude + "%20" + latitude + ")&radius=" + MainActivity.RADIUS);
+            Log.d("Command", command);
             getVal = new HttpGet(command);
             try {
                 HttpResponse response = httpclient.execute(getVal);

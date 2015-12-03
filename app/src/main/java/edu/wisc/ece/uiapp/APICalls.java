@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 public class APICalls {
     private static JSONArray jsonBars;
     public static HashMap<Integer,Bar> barMap;
+    public static HashMap<Integer,ArrayList<Event>> eventMap;
 
     public static void getEvents(Activity activity, String latitude, String longitude, String radius){
         eventQuery hi = new eventQuery(activity);
@@ -50,6 +51,7 @@ public class APICalls {
     }
     public static void fillEvents(JSONArray jsonArray) {
         MainActivity.events = new ArrayList<Event>();
+        eventMap = new HashMap<Integer, ArrayList<Event>>();
         if (jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {
                 try {
@@ -63,6 +65,16 @@ public class APICalls {
                     e.setEndTime(tmp.getString("end_time"));
                     e.setFavorites(tmp.getInt("favorites"));
                     MainActivity.events.add(e);
+                    ArrayList<Event> tmpp = eventMap.get(e.getBarId());
+                    if(tmpp == null){
+                        tmpp = new ArrayList<Event>();
+                        tmpp.add(e);
+                        eventMap.put(e.getBarId(), tmpp);
+                    }
+                    else{
+                        tmpp.add(e);
+                    }
+
                     Log.d("In LOOP", e.message);
                 } catch (JSONException e) {
 
@@ -82,21 +94,11 @@ public class APICalls {
             String temp1 = "";
             String latitude = strs[0];
             String longitude = strs[1];
-            String radius;
-            try{
-                radius = strs[2];
-            }
-            catch (NullPointerException e){
-                radius = "1000";
-            }
-            if (radius == null){
-                radius = "1000";
-            }
 
             //Construct an HTTP POST
             HttpClient httpclient = new DefaultHttpClient();
             String command = ("http://flock-app-dev2.elasticbeanstalk.com/api/eventloc/?" +
-                    "location=POINT(" + latitude + "%20" + longitude + ")&radius=" + radius);
+                    "location=POINT(" + latitude + "%20" + longitude + ")&radius=" + MainActivity.RADIUS);
             HttpGet getVal = new HttpGet(command);
             try {
                 HttpResponse response = httpclient.execute(getVal);
@@ -135,7 +137,6 @@ public class APICalls {
         String strs[ ] = new String [3];
         strs[0] = latitude;
         strs[1] = longitude;
-        strs[2] = radius;
         hi.execute(strs);
 
 
@@ -177,16 +178,6 @@ public class APICalls {
             String temp1 = "";
             String latitude = strs[0];
             String longitude = strs[1];
-            String radius;
-            try{
-                radius = strs[2];
-            }
-            catch (NullPointerException e){
-                radius = "10000000000000000";
-            }
-            if (radius == null){
-                radius = "10000000000000000";
-            }
 
             //Construct an HTTP POST
             HttpClient httpclient = new DefaultHttpClient();
