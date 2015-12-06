@@ -97,8 +97,9 @@ public class APICalls {
 
             //Construct an HTTP POST
             HttpClient httpclient = new DefaultHttpClient();
-            String command = ("http://flock-app-dev2.elasticbeanstalk.com/api/eventloc/?" +
+            String command = (MainActivity.API_URL + "api/eventloc/?" +
                     "location=POINT(" + latitude + "%20" + longitude + ")&radius=" + MainActivity.RADIUS);
+            Log.d("EventQueryCommand", command);
             HttpGet getVal = new HttpGet(command);
             try {
                 HttpResponse response = httpclient.execute(getVal);
@@ -131,7 +132,7 @@ public class APICalls {
 
         }
     }
-    public static void getBars(String latitude, String longitude, String radius){
+    public static void getBars(String latitude, String longitude){
 
         barQuery hi = new barQuery();
         String strs[ ] = new String [3];
@@ -181,7 +182,8 @@ public class APICalls {
 
             //Construct an HTTP POST
             HttpClient httpclient = new DefaultHttpClient();
-            String command = ("http://flock-app-dev2.elasticbeanstalk.com/api/bars/");
+            String command = (MainActivity.API_URL + "api/bars/?" +
+                    "location=POINT(" + latitude + "%20" + longitude + ")&radius=" + MainActivity.RADIUS);
             HttpGet getVal = new HttpGet(command);
             try {
                 HttpResponse response = httpclient.execute(getVal);
@@ -208,9 +210,11 @@ public class APICalls {
         protected void onPostExecute(JSONArray res) {
             APICalls.fillBars(res);
             Collection<Bar> barList = barMap.values();
-            MainActivity.mGeofenceManager.onStart();
-            MainActivity.mGeofenceManager.addGeofences(barList);
-            MainActivity.mGeofenceManager.enableGeofence();
+            if(barMap.size() != 0) {
+                MainActivity.mGeofenceManager.onStart();
+                MainActivity.mGeofenceManager.addGeofences(barList);
+                MainActivity.mGeofenceManager.enableGeofence();
+            }
         }
     }
     protected static class barPopulation extends AsyncTask<String, Void, Integer> {
@@ -227,10 +231,10 @@ public class APICalls {
             String command = "";
             HttpClient httpclient = new DefaultHttpClient();
             if (enter==0) {
-                command = ("http://flock-app-dev2.elasticbeanstalk.com/api/enter_location/" + bid);
+                command = (MainActivity.API_URL + "api/enter_location/" + bid);
             }
             else{
-                command = ("http://flock-app-dev2.elasticbeanstalk.com/api/leave_location/" + bid);
+                command = (MainActivity.API_URL + "api/leave_location/" + bid);
             }
             HttpGet getVal = new HttpGet(command);
             try {

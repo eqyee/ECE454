@@ -154,8 +154,6 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
         }
 
 
-
-
         TextView itemTextView = (TextView)convertView.findViewById(R.id.groupItem_tv);
         TextView eventTextView = (TextView)convertView.findViewById(R.id.eventTime);
         itemTextView.setText(APICalls.barMap.get(event.getBarId()).getName() + " - " + event.getSubject());

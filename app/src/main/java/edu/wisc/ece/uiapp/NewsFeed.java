@@ -90,10 +90,12 @@ public class NewsFeed extends Fragment {
         MainActivity.events = new ArrayList<Event>();
         MainActivity.events.clear();
         adapter.notifyDataSetInvalidated();
-
+        APICalls.getEvents(getActivity(), Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude), MainActivity.RADIUS);
+        APICalls.getBars(Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude));
         adapter.notifyDataSetChanged();
-
+        Log.d("LAT", Double.toString(CurrentLocation.latitude));
+        Log.d("LON", Double.toString(CurrentLocation.longitude));
         // APICalls.getEvents(getActivity(), Double.toString(MainActivity.myLocation.latitude), Double.toString(MainActivity.myLocation.longitude), radius);
-        APICalls.getEvents(getActivity(), Double.toString(-89.4031832000000009), Double.toString(43.0683683999999971), MainActivity.RADIUS);
+
     }
 }

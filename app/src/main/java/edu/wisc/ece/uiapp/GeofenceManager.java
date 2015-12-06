@@ -43,17 +43,19 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
 
     public void addGeofences(Collection<Bar> bars){
         mGeofenceList = new ArrayList<>();
-        for(Bar  b:  bars){
-            Log.d("Geofence Added", Integer.toString(b.getId()));
-            mGeofenceList.add(new Geofence.Builder()
+        if (bars.size() != 0) {
+            for (Bar b : bars) {
+                Log.d("Geofence Added", Integer.toString(b.getId()));
+                mGeofenceList.add(new Geofence.Builder()
 
-                    .setRequestId("" + b.getId())
-                            //set static radius to be 100
-                    .setCircularRegion(b.getLocation().latitude, b.getLocation().longitude, 100.0f)
-                    .setExpirationDuration(100000000)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                            Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .build());
+                        .setRequestId("" + b.getId())
+                                //set static radius to be 100
+                        .setCircularRegion(b.getLocation().latitude, b.getLocation().longitude, 100.0f)
+                        .setExpirationDuration(100000000)
+                        .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                                Geofence.GEOFENCE_TRANSITION_EXIT)
+                        .build());
+            }
         }
     }
     public void enableGeofence(){
@@ -91,12 +93,14 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
         }
     }
     private GeofencingRequest getGeofenceRequest() {
+
         GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
 
         builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
 
         builder.addGeofences(mGeofenceList);
         return builder.build();
+
     }
     private PendingIntent getGeofencePendingIntent() {
         if (mGeofencePendingIntent != null) {
@@ -132,7 +136,7 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
 
     @Override
     public void onConnected(Bundle connectionHint){
-        if(waiting)
+        if(waiting && APICalls.barMap != null && APICalls.barMap.size() != 0)
             enableGeofence();
         waiting = false;
         Log.w(TAG, "Connected to GoogleApiClient");

@@ -30,6 +30,7 @@ public class InsideOutside implements LocationListener {
 
     public InsideOutside(Context context){
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        start();
         initializeLocTimer();
         initializeTimer();
     }
@@ -63,15 +64,22 @@ public class InsideOutside implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         //TODO: Timer error
-        timer.cancel();
-        timer.purge();
-        timer = new Timer();
-        currentLatitude = location.getLatitude();
-        currentLongitude = location.getLongitude();
-        currentUncertainty = location.getAccuracy();
+        CurrentLocation.latitude = location.getLatitude();
+        CurrentLocation.longitude = location.getLongitude();
+        try {
+            timer.cancel();
+            timer.purge();
+            timer = new Timer();
+            currentLatitude = location.getLatitude();
+            currentLongitude = location.getLongitude();
+            currentUncertainty = location.getAccuracy();
 
-        checkInsideProbability();
-        timer.schedule(timerTask, 180000);
+            checkInsideProbability();
+            timer.schedule(timerTask, 180000);
+        }
+        catch(NullPointerException e){
+            Log.e("Inside/Outside", e.getMessage());
+        }
     }
 
     private void initializeTimer(){
