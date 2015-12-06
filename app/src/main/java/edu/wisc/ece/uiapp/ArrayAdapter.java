@@ -154,7 +154,13 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
         }
 
 
-
+        // Temporary solution.
+        // TODO: Add server call to get the bar if its not in the barMap
+        if(APICalls.barMap.get(event.getBarId()) == null) {
+            TextView itemTextView = (TextView)convertView.findViewById(R.id.groupItem_tv);
+            itemTextView.setText(event.getSubject());
+            return convertView;
+        }
 
         TextView itemTextView = (TextView)convertView.findViewById(R.id.groupItem_tv);
         TextView eventTextView = (TextView)convertView.findViewById(R.id.eventTime);

@@ -57,6 +57,8 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
         }
     }
     public void enableGeofence(){
+        if(mGeofenceList.isEmpty())
+            return;
         if (!mGoogleApiClient.isConnected()) {
             Toast.makeText(applicationContext,"GoogleAPIClient not connected", Toast.LENGTH_SHORT).show();
             Log.w("GeofenceManager", "Didn't enable Geofences");
