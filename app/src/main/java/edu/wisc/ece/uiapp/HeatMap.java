@@ -169,7 +169,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
         DateTimeFormatter endF = DateTimeFormat.forPattern("hh:mm a");
         DateTimeFormatter startF = DateTimeFormat.forPattern("hh:mm a");
         for(Bar bar: APICalls.barMap.values()){
-            String message = "Upcoming event: No event!";
+            String message = "No event!";
             if (APICalls.eventMap.get(bar.getId()) != null && APICalls.eventMap.get(bar.getId()).size() != 0){
                 endF = DateTimeFormat.forPattern("hh:mm a");
                 startF = DateTimeFormat.forPattern("hh:mm a");
@@ -187,7 +187,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
                 if(now.isAfter(start)){
                     startS = "Now";
                 }
-                message = "Upcoming event: " + APICalls.eventMap.get(bar.getId()).get(0).getSubject() + "\n" + startS + " - " + endS;
+                message = APICalls.eventMap.get(bar.getId()).get(0).getSubject() + "\n" + startS + " - " + endS;
             }
 
             Marker marker = map.addMarker(new MarkerOptions()

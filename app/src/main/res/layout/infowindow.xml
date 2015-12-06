@@ -18,6 +18,14 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/announcement"
+            android:text="@string/upcomingevent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/snippet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
