@@ -31,5 +31,5 @@ dependencies {
     compile 'com.google.android.gms:play-services-location:8.1.0'
     compile 'com.google.maps.android:android-maps-utils:0.4+'
     compile 'com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT'
-    compile files('C:/Users/CCS/Documents/ECE454Repo/ECE454/libs/joda-time-2.4.jar')
+    compile files('../libs/joda-time-2.4.jar')
 }

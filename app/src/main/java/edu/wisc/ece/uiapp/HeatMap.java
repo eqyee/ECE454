@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimerTask;
 
 /**
  * Created by CCS on 10/28/2015.
@@ -47,6 +48,8 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
     private Geocoder geocoder;
     private GoogleMap map;
 
+    public static Handler searchHandler = new Handler();
+
     HashMap<Marker, Integer> markers;
     ArrayList<Marker> markerArray;
 
@@ -57,13 +60,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
         @Override
         public void handleMessage(Message inputMessage){
             if(inputMessage.obj instanceof ArrayList){
-                ArrayList<String> results = (ArrayList)inputMessage.obj;
-                for (String place : results) {
-
-                    SearchResult option = new SearchResult(place,
-                            ContextCompat.getDrawable(view.getContext(), android.R.drawable.ic_menu_search));
-                    search.addSearchable(option);
-                }
+                search.setSearchables((ArrayList)inputMessage.obj);
                 search.updateResults();
             }
         }
@@ -185,12 +182,12 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onSearchTermChanged(String searchTerm) {
-
                 if (searchTerm != null) {
+                    searchHandler.removeCallbacksAndMessages(null);
                     try {
-                        search.clearSearchable();
-                        Runnable mRunnable = new AutocompleteSearch(searchTerm, handler);
-                        mRunnable.run();
+                        Runnable mRunnable = new AutocompleteSearch(getActivity(), searchTerm, handler, search);
+                        searchHandler.postDelayed(mRunnable, 300);
+                        //mRunnable.run();
                     } catch (Exception e) {
                         Log.e("", "Something went wrong: ", e);
                     }

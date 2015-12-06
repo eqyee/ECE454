@@ -1,8 +1,12 @@
 package edu.wisc.ece.uiapp;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
+
+import com.quinny898.library.persistentsearch.SearchResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,19 +26,24 @@ import java.util.ArrayList;
 public class AutocompleteSearch implements Runnable {
     private String input;
     private Handler handler;
+    private Context context;
 
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String API_KEY = "AIzaSyDWi6VXrx2hVMdzeLhLCK8lPxUEAymLJGA";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
 
-    public AutocompleteSearch(String search, Handler handler){
+    private com.quinny898.library.persistentsearch.SearchBox searchBox;
+
+    public AutocompleteSearch(Context context, String search, Handler handler, com.quinny898.library.persistentsearch.SearchBox searchBox){
+        this.context = context;
         this.input = search;
         this.handler = handler;
+        this.searchBox = searchBox;
     }
 
     public void run() {
-        ArrayList<String> resultList = null;
+        ArrayList<SearchResult> resultList = null;
 
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
@@ -81,7 +90,9 @@ public class AutocompleteSearch implements Runnable {
                 System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
                 System.out.println("============================================================");
                 if(!input.equals(predsJsonArray.getJSONObject(i).getString("description"))) {
-                    resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+                    SearchResult option = new SearchResult(predsJsonArray.getJSONObject(i).getString("description"),
+                            ContextCompat.getDrawable(context, android.R.drawable.ic_menu_search));
+                    resultList.add(option);
                 }
             }
         } catch (JSONException e) {
