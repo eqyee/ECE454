@@ -31,6 +31,10 @@ import com.google.maps.android.heatmaps.HeatmapTileProvider;
 import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
 
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +51,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
     private com.quinny898.library.persistentsearch.SearchBox search;
     private Geocoder geocoder;
     private GoogleMap map;
-
+    private CustomInfoWindow customInfoWindow;
     public static Handler searchHandler = new Handler();
 
     HashMap<Marker, Integer> markers;
@@ -86,6 +90,8 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
         /* map is already there, just return view as it is */
         }
         MapFragment mapFragment = (MapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+        customInfoWindow = new CustomInfoWindow(inflater);
+
         try {
             mapFragment.getMapAsync(this);
         } catch(Exception e){
@@ -111,6 +117,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap map) {
         this.map = map;
+        map.setInfoWindowAdapter(customInfoWindow);
         map.setMyLocationEnabled(true);
         updateHeatMap();
         LatLng center = new LatLng(CurrentLocation.latitude, CurrentLocation.longitude);
@@ -157,10 +164,36 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
         }
         markers = new HashMap<>();
         markerArray = new ArrayList<>();
+        String pattern = "yyyy-MM-dd'T'HH:mm:ssZ";
+        DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
+        DateTimeFormatter endF = DateTimeFormat.forPattern("hh:mm a");
+        DateTimeFormatter startF = DateTimeFormat.forPattern("hh:mm a");
         for(Bar bar: APICalls.barMap.values()){
+            String message = "Upcoming event: No event!";
+            if (APICalls.eventMap.get(bar.getId()) != null && APICalls.eventMap.get(bar.getId()).size() != 0){
+                endF = DateTimeFormat.forPattern("hh:mm a");
+                startF = DateTimeFormat.forPattern("hh:mm a");
+                DateTime start = dtf.parseDateTime(APICalls.eventMap.get(bar.getId()).get(0).getStartTime());
+                DateTime end = dtf.parseDateTime(APICalls.eventMap.get(bar.getId()).get(0).getEndTime());
+                DateTime now = new DateTime();
+                if( now.getDayOfYear() != start.getDayOfYear()){
+                    startF = DateTimeFormat.forPattern("MMM dd: hh:mm a");
+                }
+                if( now.getDayOfYear() != end.getDayOfYear()-1){
+                    endF = DateTimeFormat.forPattern("MMM dd: hh:mm a");
+                }
+                String startS = start.toString(startF);
+                String endS = end.toString(endF);
+                if(now.isAfter(start)){
+                    startS = "Now";
+                }
+                message = "Upcoming event: " + APICalls.eventMap.get(bar.getId()).get(0).getSubject() + "\n" + startS + " - " + endS;
+            }
+
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(bar.getLocation())
-                    .title(bar.getName()));
+                    .title(bar.getName())
+                    .snippet(message));
             markers.put(marker, bar.getId());
             markerArray.add(marker);
         }

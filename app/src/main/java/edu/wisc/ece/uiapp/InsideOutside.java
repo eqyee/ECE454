@@ -30,7 +30,6 @@ public class InsideOutside implements LocationListener {
 
     public InsideOutside(Context context){
         locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
-        start();
         initializeLocTimer();
         initializeTimer();
     }

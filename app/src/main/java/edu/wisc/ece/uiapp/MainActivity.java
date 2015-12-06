@@ -5,6 +5,7 @@ import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
@@ -35,7 +36,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final String API_URL = "http://flock-app-dev2.elasticbeanstalk.com/";
     public static InsideOutside insideOutsideManager;
     public static GeofenceManager mGeofenceManager;
-
+    public static Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         mGeofenceManager.onStart();
         mGeofenceManager.addGeofences(barList);
         mGeofenceManager.enableGeofence();
-
+        mContext = getApplicationContext();
         // Initilization
         mAdapter = new TabsPagerAdapter(getFragmentManager());
         setUpPager();

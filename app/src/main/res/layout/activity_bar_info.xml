@@ -10,8 +10,12 @@
         android:textColor="#000000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        style="@style/BarName"
+        android:layout_marginStart="34dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="12dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +24,6 @@
         android:textColor="#000000"
         android:id="@+id/bar_location_tv"
         android:layout_below="@+id/bar_name_text"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="40dp" />
+        android:layout_alignStart="@+id/bar_name_text" />
 
 </RelativeLayout>

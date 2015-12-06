@@ -147,6 +147,9 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
         if( now.getDayOfYear() != start.getDayOfYear()){
             startF = DateTimeFormat.forPattern("MMM dd: hh:mm a");
         }
+        if( now.getDayOfYear() != end.getDayOfYear()-1){
+            endF = DateTimeFormat.forPattern("MMM dd: hh:mm a");
+        }
         String startS = start.toString(startF);
         String endS = end.toString(endF);
         if(now.isAfter(start)){
