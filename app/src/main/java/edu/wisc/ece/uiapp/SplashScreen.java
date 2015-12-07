@@ -51,6 +51,9 @@ public class SplashScreen extends Activity implements LocationListener {
 
             lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (location == null || location.getLatitude() == 0.0 || location.getLongitude() == 0.0){
+                location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
 
             if (location != null && location.getLatitude() != 0.0 && location.getLongitude() != 0.0) {
                 CurrentLocation.latitude = location.getLatitude();
