@@ -44,6 +44,7 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDWi6VXrx2hVMdzeLhLCK8lPxUEAymLJGA" />
+        <service android:name=".InsideOutside" />
 
     </application>
 
