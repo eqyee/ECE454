@@ -1,16 +1,16 @@
 package edu.wisc.ece.uiapp;
 
-/**
- * Created by CCS on 10/28/2015.
- */
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentPagerAdapter;
 
-public class TabsPagerAdapter extends FragmentPagerAdapter {
+import edu.wisc.ece.uiapp.BarTabs.EventFeed;
+import edu.wisc.ece.uiapp.BarTabs.WeeklySpecials;
+
+public class BarTabsPagerAdaper extends FragmentPagerAdapter {
 
     private int numTabs = 3;
-    public TabsPagerAdapter(FragmentManager fm) {
+    public BarTabsPagerAdaper(FragmentManager fm) {
         super(fm);
     }
 
@@ -20,13 +20,13 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         switch (index) {
             case 0:
                 // Profile fragment activity
-                return new NewsFeed();
+                return new EventFeed();
             case 1:
                 // News Feed fragment activity
-                return new HeatMap();
+                return new WeeklySpecials();
             case 2:
                 // Heat Map fragment activity
-                return new Profile();
+                return new EventFeed();
         }
 
         return null;
@@ -44,5 +44,4 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
         //NewsFeed.adapter.notifyDataSetChanged();
         return super.getItemPosition(obj);
     }
-
 }

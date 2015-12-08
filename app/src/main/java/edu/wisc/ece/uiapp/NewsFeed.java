@@ -20,7 +20,7 @@ public class NewsFeed extends Fragment {
     public static final String BAR_ID = "BarId";
 
     public static SwipeRefreshLayout mSwipeRefreshLayout;
-    static ArrayAdapter adapter;
+    public static ArrayAdapter adapter;
 
     private ExpandableListView listView;
 
@@ -65,6 +65,22 @@ public class NewsFeed extends Fragment {
         return rootView;
     }
 
+    @Override
+    public void onPause(){
+        if(adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        if(adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        super.onResume();
+    }
+
     public static void eventsListDataHasChanged() {
         if(adapter != null) {
             adapter.notifyDataSetChanged();
@@ -86,7 +102,6 @@ public class NewsFeed extends Fragment {
     }
 
     private void refreshContent() {
-
         MainActivity.events = new ArrayList<Event>();
         MainActivity.events.clear();
         adapter.notifyDataSetInvalidated();
@@ -96,6 +111,5 @@ public class NewsFeed extends Fragment {
         Log.d("LAT", Double.toString(CurrentLocation.latitude));
         Log.d("LON", Double.toString(CurrentLocation.longitude));
         // APICalls.getEvents(getActivity(), Double.toString(MainActivity.myLocation.latitude), Double.toString(MainActivity.myLocation.longitude), radius);
-
     }
 }
