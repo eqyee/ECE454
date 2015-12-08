@@ -6,7 +6,7 @@ import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
-import android.media.MediaPlayer;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
@@ -41,9 +41,15 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (APICalls.barMap.values() == null){
+            Intent i = new Intent(MainActivity.this, SplashScreen.class);
+            startActivity(i);
+            finish();
+        }
         setContentView(R.layout.activity_main);
 
         mGeofenceManager = new GeofenceManager(this);
+
         Collection<Bar> barList = APICalls.barMap.values();
         mGeofenceManager.onStart();
         mGeofenceManager.addGeofences(barList);

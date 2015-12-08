@@ -152,8 +152,9 @@ public class APICalls {
                     Log.d("Fill Bars", bar.name);
                     bar.setId(tmp.getInt("id"));
                     bar.setPatrons(tmp.getInt("patrons"));
+                    bar.setWeekly(tmp.getJSONObject("weekly_data"));
+                    Log.d("SundayBar", bar.week.sunday.special);
                     String parse = tmp.getString("location");
-                    Log.d("BREAKING", parse);
                     if (parse == null || parse.equals("null"))
                         continue;
                     Matcher m = Pattern.compile("\\((.*?)\\)").matcher(parse);
