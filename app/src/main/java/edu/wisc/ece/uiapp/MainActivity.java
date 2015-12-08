@@ -34,7 +34,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static boolean inside = true;
     public static final String RADIUS = "3000";
     public static final String API_URL = "http://flock-app-dev2.elasticbeanstalk.com/";
-    public static InsideOutside insideOutsideManager;
     public static GeofenceManager mGeofenceManager;
     public static Context mContext;
 
@@ -43,7 +42,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        insideOutsideManager = new InsideOutside(this);
         mGeofenceManager = new GeofenceManager(this);
         Collection<Bar> barList = APICalls.barMap.values();
         mGeofenceManager.onStart();
@@ -138,6 +136,11 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
     public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-
     }
+
+    @Override
+    public void onDestroy(){
+        super.onDestroy();
+    }
+
 }

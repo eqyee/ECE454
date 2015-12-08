@@ -1,12 +1,14 @@
 package edu.wisc.ece.uiapp;
 
-
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 
 import java.util.Timer;
@@ -15,23 +17,37 @@ import java.util.TimerTask;
 /**
  * Created by Evan Yee on 11/2/2015.
  */
-public class InsideOutside implements LocationListener {
+public class InsideOutside extends Service implements LocationListener{
 
     protected LocationManager locationManager;
-    private double currentLatitude;
-    private double currentLongitude;
     private double currentUncertainty;
 
     private Timer timer;
     private TimerTask timerTask;
     final Handler handler = new Handler();
-    private Timer locTimer;
+    private static Timer locTimer;
     private TimerTask locTimerTask;
 
-    public InsideOutside(Context context){
-        locationManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+    IBinder mBinder;
+
+    @Override
+    public void onCreate(){
+        locationManager = (LocationManager)getApplication().getSystemService(Context.LOCATION_SERVICE);
         initializeLocTimer();
         initializeTimer();
+        timer = new Timer();
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+        getLocationUpdates();
+        Log.e("Inside/Outside", "Starting inside/outside detection");
+        return 1;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return mBinder;
     }
 
     public void getLocationUpdates(){
@@ -46,13 +62,6 @@ public class InsideOutside implements LocationListener {
         }catch (SecurityException se){}
     }
 
-    public void start(){
-        getLocationUpdates();
-    }
-
-    public void stop(){
-        stopLocationUpdates();
-    }
 
     /**
      * If locationChanges change lat and long
@@ -66,17 +75,17 @@ public class InsideOutside implements LocationListener {
         CurrentLocation.latitude = location.getLatitude();
         CurrentLocation.longitude = location.getLongitude();
         try {
-            timer.cancel();
             timer.purge();
-            timer = new Timer();
-            currentLatitude = location.getLatitude();
-            currentLongitude = location.getLongitude();
             currentUncertainty = location.getAccuracy();
 
             checkInsideProbability();
+            initializeTimer();
             timer.schedule(timerTask, 180000);
         }
         catch(NullPointerException e){
+            Log.e("Inside/Outside", e.getMessage());
+        }
+        catch(IllegalStateException e){
             Log.e("Inside/Outside", e.getMessage());
         }
     }
@@ -135,7 +144,7 @@ public class InsideOutside implements LocationListener {
         else{
             MainActivity.inside = true;
         }
-        Log.w("Inside/Outside", "" + MainActivity.inside);
+        Log.w("Inside/Outside", "" + MainActivity.inside + " : " + currentUncertainty);
     }
 
     @Override
@@ -144,5 +153,11 @@ public class InsideOutside implements LocationListener {
     public void onStatusChanged(String provider, int status, Bundle extras) {}
     @Override
     public void onProviderDisabled(String provider) {}
+    @Override
+    public void onDestroy(){
+        Log.e("Inside/Outside", "Stopping inside/outside detection");
+        stopLocationUpdates();
+        super.onDestroy();
+    }
 
 }
