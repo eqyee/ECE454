@@ -101,7 +101,7 @@ public class GeofenceIntentService extends IntentService{
                 }
             }, delay);
            //TODO: FIX THIS
-           MainActivity.insideOutsideManager.start();
+           startService(new Intent(getBaseContext(), InsideOutside.class));
         }
         else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
             Log.d("Leaving!", Integer.toString(GeofenceIntentService.currentGeofenceId));
@@ -115,7 +115,7 @@ public class GeofenceIntentService extends IntentService{
                 APICalls.updatePopulation(1, 0, currentGeofenceId);
                 GeofenceIntentService.currentGeofenceId = -1;
             }
-            MainActivity.insideOutsideManager.stop();
+            stopService(new Intent(getBaseContext(), InsideOutside.class));
         }
         return;
     }

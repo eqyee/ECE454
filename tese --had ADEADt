@@ -1,0 +1,23 @@
+[33mcommit 4ab9620111300ea1f123f2861da263bd4fcab804[m
+Author: Evan Yee <eqyee190@gmail.com>
+Date:   Mon Dec 7 17:36:26 2015 -0600
+
+    Try to get last known network location if it cant get GPS location
+
+[1mdiff --git a/app/src/main/java/edu/wisc/ece/uiapp/SplashScreen.java b/app/src/main/java/edu/wisc/ece/uiapp/SplashScreen.java[m
+[1mindex 13a653f..57da07f 100644[m
+[1m--- a/app/src/main/java/edu/wisc/ece/uiapp/SplashScreen.java[m
+[1m+++ b/app/src/main/java/edu/wisc/ece/uiapp/SplashScreen.java[m
+[36m@@ -51,6 +51,9 @@[m [mpublic class SplashScreen extends Activity implements LocationListener {[m
+ [m
+             lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);[m
+             Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);[m
+[32m+[m[32m            if (location == null || location.getLatitude() == 0.0 || location.getLongitude() == 0.0){[m
+[32m+[m[32m                location = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);[m
+[32m+[m[32m            }[m
+ [m
+             if (location != null && location.getLatitude() != 0.0 && location.getLongitude() != 0.0) {[m
+                 CurrentLocation.latitude = location.getLatitude();[m
+[1mdiff --git a/build/intermediates/gradle_project_sync_data.bin b/build/intermediates/gradle_project_sync_data.bin[m
+[1mindex 7210ef9..739dfa7 100644[m
+Binary files a/build/intermediates/gradle_project_sync_data.bin and b/build/intermediates/gradle_project_sync_data.bin differ

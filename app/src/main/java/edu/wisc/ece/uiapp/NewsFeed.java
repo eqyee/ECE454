@@ -22,7 +22,7 @@ public class NewsFeed extends Fragment {
     public static final String BAR_ID = "BarId";
 
     public static SwipeRefreshLayout mSwipeRefreshLayout;
-    static ArrayAdapter adapter;
+    public static ArrayAdapter adapter;
 
     private ExpandableListView listView;
 
@@ -65,6 +65,22 @@ public class NewsFeed extends Fragment {
 
 
         return rootView;
+    }
+
+    @Override
+    public void onPause(){
+        if(adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        if(adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+        super.onResume();
     }
 
     public static void eventsListDataHasChanged() {

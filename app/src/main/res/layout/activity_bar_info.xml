@@ -26,4 +26,45 @@
         android:layout_below="@+id/bar_name_text"
         android:layout_alignStart="@+id/bar_name_text" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Event Feed"
+        android:id="@+id/tab1"
+        android:layout_marginRight="0dip"
+        android:layout_marginLeft="0dip"
+        android:layout_below="@id/bar_location_tv"
+        android:layout_weight="1"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Weekly Specials"
+        android:id="@+id/tab2"
+        android:layout_marginRight="0dip"
+        android:layout_marginLeft="0dip"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:layout_alignTop="@+id/tab3"
+        android:layout_centerHorizontal="true" />
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="XXXXXX"
+        android:id="@+id/tab3"
+        android:layout_toRightOf="@id/tab2"
+        android:layout_below="@id/bar_location_tv"
+        android:layout_marginRight="0dip"
+        android:layout_marginLeft="0dip"
+        android:layout_weight="1"
+        android:layout_alignParentEnd="false"
+        android:gravity="end" />
+
+    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tab1">
+    </android.support.v4.view.ViewPager>
+
 </RelativeLayout>
