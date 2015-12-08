@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
@@ -86,7 +88,6 @@ public class NewsFeed extends Fragment {
     }
 
     private void refreshContent() {
-
         MainActivity.events = new ArrayList<Event>();
         MainActivity.events.clear();
         adapter.notifyDataSetInvalidated();
@@ -96,6 +97,5 @@ public class NewsFeed extends Fragment {
         Log.d("LAT", Double.toString(CurrentLocation.latitude));
         Log.d("LON", Double.toString(CurrentLocation.longitude));
         // APICalls.getEvents(getActivity(), Double.toString(MainActivity.myLocation.latitude), Double.toString(MainActivity.myLocation.longitude), radius);
-
     }
 }

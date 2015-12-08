@@ -3,9 +3,11 @@ package edu.wisc.ece.uiapp;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -62,10 +64,18 @@ public class SplashScreen extends Activity implements LocationListener {
                 lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
                 Log.e("DidnttGetLast", "Nope last known!");
             }
+            MediaPlayer mPlayer = new MediaPlayer();
+                AssetFileDescriptor afd = getAssets().openFd("epic_meal_time.mp3");
+                mPlayer = new MediaPlayer();
+                mPlayer.setDataSource(afd.getFileDescriptor());
+                mPlayer.prepare();
+                mPlayer.start();
         }
         catch (SecurityException e){
             Log.e("LocationManager", "Location Manager Error in Splash");
-        }
+        }catch (Exception e) {
+        e.printStackTrace();
+    }
 
         //TODO - NOT SURE WHATS GOING ON HERE------------------------------------------------------
 
@@ -189,6 +199,7 @@ public class SplashScreen extends Activity implements LocationListener {
     protected void onDestroy() {
         super.onDestroy();
         try {
+           // mPlayer.stop();
             lm.removeUpdates(this);
         }
         catch(SecurityException e){
