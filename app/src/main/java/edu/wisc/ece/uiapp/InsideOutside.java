@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,7 +21,8 @@ import java.util.TimerTask;
 public class InsideOutside extends Service implements LocationListener{
 
     protected LocationManager locationManager;
-    private double currentUncertainty;
+    private ArrayList<Double> uncertainty = new ArrayList<>(7);
+    private int uncertaintyPosition = 0;
 
     private Timer timer;
     private TimerTask timerTask;
@@ -49,7 +51,7 @@ public class InsideOutside extends Service implements LocationListener{
 
     public void getLocationUpdates(){
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 30000, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 0, this);
         }catch (SecurityException se){}
     }
 
@@ -73,7 +75,8 @@ public class InsideOutside extends Service implements LocationListener{
         CurrentLocation.longitude = location.getLongitude();
         try {
             timer.purge();
-            currentUncertainty = location.getAccuracy();
+            uncertainty.add(uncertaintyPosition, (double) location.getAccuracy());
+            uncertaintyPosition = (uncertaintyPosition + 1) % 7;
             timer = new Timer();
             checkInsideProbability();
             initializeTimer();
@@ -93,7 +96,9 @@ public class InsideOutside extends Service implements LocationListener{
                 //use a handler to run a toast that shows the current timestamp
                 handler.post(new Runnable() {
                     public void run() {
-                        currentUncertainty = 10000;
+                        for(int i = 0; i < 7; i++) {
+                            uncertainty.add(i, 10000.0);
+                        }
                         stopLocationUpdates();
                         checkInsideProbability();
                     }
@@ -104,27 +109,40 @@ public class InsideOutside extends Service implements LocationListener{
 
 
     public void checkInsideProbability(){
-        if(currentUncertainty < 60.0){
+        int inside = 1;
+        int certainCount = 0;
+        for(Double curr : uncertainty){
+            if(curr < 60.0) {
+                certainCount++;
+            }
+            else if(curr > 9999){
+                inside = 2;
+                break;
+            }
+            if(certainCount > 1){
+                inside = 0;
+                break;
+            }
+        }
+        if(inside == 1){
             MainActivity.inside = false;
         }
-        else if(currentUncertainty > 9999){
+        else if(inside == 2){
             MainActivity.inside = true;
             try {
                 locationManager.removeUpdates(this);
             } catch(SecurityException se){}
 
         }
-        else if(currentUncertainty > 300){
-            MainActivity.inside = true;
-            try {
-                locationManager.removeUpdates(this);
-            } catch(SecurityException se){}
-      }
         else{
             MainActivity.inside = true;
         }
-        Log.w("Inside/Outside", "" + MainActivity.inside + " : " + currentUncertainty);
+        Log.w("Inside/Outside", "" + MainActivity.inside + " : " +
+                uncertainty.get(0) + "," + uncertainty.get(1) + "," + uncertainty.get(2) + "," +
+                uncertainty.get(3) + "," + uncertainty.get(4) + "," + uncertainty.get(5) + "," +
+                uncertainty.get(6) + "," + uncertainty.get(7));
     }
+
 
     @Override
     public void onProviderEnabled(String provider) {}
