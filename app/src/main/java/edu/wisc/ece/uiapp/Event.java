@@ -1,10 +1,14 @@
 package edu.wisc.ece.uiapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Event {
+public class Event implements Parcelable {
     String name;
     String message;
     String start_time;
@@ -103,4 +107,57 @@ public class Event {
 
         return newsFeedItems;
     }
+
+    protected Event(Parcel in) {
+        name = in.readString();
+        message = in.readString();
+        start_time = in.readString();
+        end_time = in.readString();
+        favorites = in.readInt();
+        barId = in.readInt();
+        subject = in.readString();
+        if (in.readByte() == 0x01) {
+            newsFeedItems = new ArrayList<String>();
+            in.readList(newsFeedItems, String.class.getClassLoader());
+        } else {
+            newsFeedItems = null;
+        }
+        parentBar = (Bar) in.readValue(Bar.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(message);
+        dest.writeString(start_time);
+        dest.writeString(end_time);
+        dest.writeInt(favorites);
+        dest.writeInt(barId);
+        dest.writeString(subject);
+        if (newsFeedItems == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(newsFeedItems);
+        }
+        dest.writeValue(parentBar);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Event> CREATOR = new Parcelable.Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
 }

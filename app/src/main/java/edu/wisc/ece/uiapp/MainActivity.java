@@ -19,6 +19,7 @@ import android.widget.SearchView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 
 @SuppressLint("NewApi")
@@ -43,6 +44,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mGeofenceManager = new GeofenceManager(this);
+        try{
+            APICalls.barMap = (HashMap<Integer, Bar>) savedInstanceState.getSerializable("barMap");
+            APICalls.eventMap = (HashMap<Integer, ArrayList<Event>>) savedInstanceState.getSerializable("eventMap");
+            Log.e("Restore", "Restoring from bundle!");
+        }
+        catch(Exception e){
+            Log.e("Restore", e.toString());
+        }
         if (APICalls.barMap.values() == null){
             APICalls.getBars(Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude));
             Log.e("WARNING", "EVENTS MIGHT BE MISSING");
@@ -151,6 +160,27 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onDestroy(){
         super.onDestroy();
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        /* If onDestroyView() is called first, we can use the previously savedState but we can't call saveState() anymore */
+        /* If onSaveInstanceState() is called first, we don't have savedState, so we need to call saveState() */
+        /* => (?:) operator inevitable! */
+        outState.putSerializable("barMap", APICalls.barMap);
+        outState.putSerializable("eventMap", APICalls.eventMap);
+        Log.e("Parceable", "Put Parceables!");
     }
 
 }

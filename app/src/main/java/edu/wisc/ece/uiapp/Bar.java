@@ -1,11 +1,16 @@
 package edu.wisc.ece.uiapp;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class Bar {
+import java.io.Serializable;
+
+public class Bar implements Parcelable {
 
     String name;
     String ssid;
@@ -62,6 +67,41 @@ public class Bar {
         this.week = week;
     }
 
+
+    protected Bar(Parcel in) {
+        name = in.readString();
+        ssid = in.readString();
+        location = (LatLng) in.readValue(LatLng.class.getClassLoader());
+        id = in.readInt();
+        patrons = in.readInt();
+        week = (WeekInformation) in.readValue(WeekInformation.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(ssid);
+        dest.writeValue(location);
+        dest.writeInt(id);
+        dest.writeInt(patrons);
+        dest.writeValue(week);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Bar> CREATOR = new Parcelable.Creator<Bar>() {
+        @Override
+        public Bar createFromParcel(Parcel in) {
+            return new Bar(in);
+        }
+
+        @Override
+        public Bar[] newArray(int size) {
+            return new Bar[size];
+        }
+    };
 }
-
-
