@@ -75,14 +75,20 @@ public class GeofenceIntentService extends IntentService{
                             //TODO: Ask about this.
                             GeofenceIntentService.currentGeofenceId = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
                             Log.d("Entering3GeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
-                            handler.post(new Runnable() {
+                            handler.postDelayed(new Runnable() {
                                 public void run() {
                                     Log.d("Entering2GeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
                                     //TODO: DECIDE WHEN INSIDE USING INSIDE/OUTSIDE
-                                    APICalls.updatePopulation(0, getWaitTime(), Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
-                                    GeofenceIntentService.currentGeofenceId = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
+                                    if (MainActivity.inside) {
+                                        APICalls.updatePopulation(0, getWaitTime(), Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
+                                        Log.d("Sending server call", Integer.toString(getWaitTime()));
+                                    }
+                                    else {
+                                        Log.d("Wait time incrementing", Integer.toString(getWaitTime()));
+                                        handler.postDelayed(this, 5000);
+                                    }
                                 }
-                            });
+                            }, 30000);
                         }
                     }
                 };
@@ -129,7 +135,7 @@ public class GeofenceIntentService extends IntentService{
         double mean = sum/BUFFSIZE;
         double variance = sumsq/BUFFSIZE - mean*mean;
         double stdDeviation = Math.sqrt(variance);
-        int total = 1;
+        int total = 0;
         int value = 0;
         for (int i =0; i<BUFFSIZE; i++){
             //1 std deviation
@@ -138,7 +144,9 @@ public class GeofenceIntentService extends IntentService{
                 value+=lineTime[i];
             }
         }
-        return value/total;
+        if(total > 0) return (value/total * delay/1000);
+        else return 0;
+
     }
     //The following was modified from google geofence sample
     // https://github.com/googlesamples/android-play-location/blob/master/Geofencing/app/src/main/java/com/google/android/gms/location/sample/geofencing/GeofenceTransitionsIntentService.java

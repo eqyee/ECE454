@@ -77,7 +77,7 @@ public class InsideOutside extends Service implements LocationListener{
         try {
             timer.purge();
             currentUncertainty = location.getAccuracy();
-
+            timer = new Timer();
             checkInsideProbability();
             initializeTimer();
             timer.schedule(timerTask, 180000);
@@ -126,10 +126,8 @@ public class InsideOutside extends Service implements LocationListener{
             try {
                 locationManager.removeUpdates(this);
             } catch(SecurityException se){}
-            locTimer.cancel();
-            locTimer.purge();
             locTimer = new Timer();
-
+            initializeLocTimer();
             locTimer.schedule(locTimerTask, 180000);
         }
         else if(currentUncertainty > 300){
@@ -137,9 +135,8 @@ public class InsideOutside extends Service implements LocationListener{
             try {
                 locationManager.removeUpdates(this);
             } catch(SecurityException se){}
-            locTimer.cancel();
-            locTimer.purge();
             locTimer = new Timer();
+            initializeLocTimer();
             locTimer.schedule(locTimerTask, 180000);        }
         else{
             MainActivity.inside = true;

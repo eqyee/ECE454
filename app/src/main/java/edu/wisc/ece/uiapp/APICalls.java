@@ -158,6 +158,7 @@ public class APICalls {
                     bar.setPhone(tmp.getString("phone"));
                     bar.setState(tmp.getString("state"));
                     bar.setWeekly(tmp.getJSONObject("weekly_data"));
+                    //bar.setZipcode(tmp.getInt("zipcode"));
                     Log.d("SundayBar", bar.week.sunday.special);
                     String parse = tmp.getString("location");
                     if (parse == null || parse.equals("null"))
@@ -237,7 +238,8 @@ public class APICalls {
             String command = "";
             HttpClient httpclient = new DefaultHttpClient();
             if (enter==0) {
-                command = (MainActivity.API_URL + "api/enter_location/" + bid);
+                command = (MainActivity.API_URL + "api/enter_location/" + bid + "/" + wait);
+
             }
             else{
                 command = (MainActivity.API_URL + "api/leave_location/" + bid);
