@@ -14,10 +14,6 @@ public class Bar {
     int patrons;
     WeekInformation week;
 
-
-
-
-
     public Bar(String name) {
         this.name = name;
 

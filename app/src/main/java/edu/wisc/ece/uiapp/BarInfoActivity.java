@@ -2,6 +2,7 @@ package edu.wisc.ece.uiapp;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -15,7 +16,7 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
     private TextView barName_tv;
     private TextView barLocation_tv;
 
-    Bar currBar;
+    public static Bar currBar;
 
     private ViewPager viewPager;
     private BarTabsPagerAdaper mAdapter;
@@ -87,12 +88,38 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
          * */
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
+            TextView Event_Feed = (TextView) findViewById(R.id.tab1);
+            TextView Weekly_Events = (TextView) findViewById(R.id.tab2);
+            TextView XXX = (TextView) findViewById(R.id.tab3);
+
             @Override
             public void onPageSelected(int position) {
                 // on changing the page
                 // make respected tab selected
                 mAdapter.notifyDataSetChanged();
                 actionBar.setSelectedNavigationItem(position);
+                switch (position){
+                    case 0:
+                        Event_Feed.setBackgroundColor(Color.BLUE);
+                        Weekly_Events.setBackgroundColor(Color.WHITE);
+                        XXX.setBackgroundColor(Color.WHITE);
+                        break;
+                    case 1:
+                        Event_Feed.setBackgroundColor(Color.WHITE);
+                        Weekly_Events.setBackgroundColor(Color.BLUE);
+                        XXX.setBackgroundColor(Color.WHITE);
+                        break;
+                    case 2:
+                        Event_Feed.setBackgroundColor(Color.WHITE);
+                        Weekly_Events.setBackgroundColor(Color.WHITE);
+                        XXX.setBackgroundColor(Color.BLUE);
+                        break;
+                    default:
+                        Event_Feed.setBackgroundColor(Color.BLUE);
+                        Weekly_Events.setBackgroundColor(Color.BLUE);
+                        XXX.setBackgroundColor(Color.BLUE);
+                        break;
+                }
             }
 
             @Override
@@ -102,6 +129,7 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
 
             @Override
             public void onPageScrollStateChanged(int arg0) {
+
             }
         });
     }

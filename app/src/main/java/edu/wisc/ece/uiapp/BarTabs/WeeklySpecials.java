@@ -9,9 +9,11 @@ import android.widget.ExpandableListView;
 
 import edu.wisc.ece.uiapp.APICalls;
 import edu.wisc.ece.uiapp.ArrayAdapter;
+import edu.wisc.ece.uiapp.Bar;
 import edu.wisc.ece.uiapp.BarInfoActivity;
 import edu.wisc.ece.uiapp.MainActivity;
 import edu.wisc.ece.uiapp.R;
+import edu.wisc.ece.uiapp.WeekAdapter;
 
 
 public class WeeklySpecials extends Fragment{
@@ -24,7 +26,8 @@ public class WeeklySpecials extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_weekly_specials, container, false);
 
         listView = (ExpandableListView) rootView.findViewById(R.id.listView);
-        adapter = new ArrayAdapter(getActivity(), APICalls.eventMap.get(BarInfoActivity.barId));
+        adapter = new WeekAdapter(getActivity(), BarInfoActivity.currBar.fillDay();
+        );
         listView.setAdapter(adapter);
         return rootView;
     }
