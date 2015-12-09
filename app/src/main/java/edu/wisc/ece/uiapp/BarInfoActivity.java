@@ -2,15 +2,14 @@ package edu.wisc.ece.uiapp;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.app.TabActivity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.widget.ExpandableListView;
+import android.view.View;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 public class BarInfoActivity extends FragmentActivity implements ActionBar.TabListener {
     public static int barId;
@@ -19,6 +18,9 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
     private TextView barName_tv;
     private TextView barLocation_tv;
     private TextView barTelephone_tv;
+    private TextView Event_Feed;
+    private TextView Weekly_Events;
+    private TextView Bar_Description;
 
     public static Bar currBar;
 
@@ -44,38 +46,64 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
         getViews();
         currBar = APICalls.barMap.get(barId);
         setViews();
+        setListeners();
 
-        // Initilization
+        // Initialization
         mAdapter = new BarTabsPagerAdaper(getFragmentManager());
         setUpPager();
         setUpActionbar();
         actionBar.hide();
-
-        TextView Event_Feed = (TextView) findViewById(R.id.tab1);
-        TextView Weekly_Events = (TextView) findViewById(R.id.tab2);
-        TextView Bar_Description = (TextView) findViewById(R.id.tab3);
-
-        Event_Feed.setBackgroundColor(Color.BLUE);
-        Weekly_Events.setBackgroundColor(Color.WHITE);
-        Bar_Description.setBackgroundColor(Color.WHITE);
     }
 
 
     /*Gets a reference to each view on the page*/
     private void getViews() {
+        Event_Feed = (TextView) findViewById(R.id.tab1);
+        Weekly_Events = (TextView) findViewById(R.id.tab2);
+        Bar_Description = (TextView) findViewById(R.id.tab3);
+
         barName_tv = (TextView) findViewById(R.id.bar_name_text);
         barLocation_tv = (TextView) findViewById(R.id.bar_location_tv);
         barTelephone_tv = (TextView) findViewById(R.id.bar_telephone_tv);
-
-
     }
 
     /*Used to populate the views*/
     private void setViews() {
         barName_tv.setText(currBar.getName());
-        //Probably need to do something with the getLocation
         barLocation_tv.setText(currBar.getFullAddress());
         barTelephone_tv.setText(currBar.getPhone());
+
+        //Set the default colors
+        Event_Feed.setBackgroundColor(Color.BLUE);
+        Weekly_Events.setBackgroundColor(Color.WHITE);
+        Bar_Description.setBackgroundColor(Color.WHITE);
+    }
+
+    private void setListeners() {
+        Event_Feed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getActionBar() != null){
+                    getActionBar().setSelectedNavigationItem(0);
+                }
+            }
+        });
+        Weekly_Events.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getActionBar() != null){
+                    getActionBar().setSelectedNavigationItem(1);
+                }
+            }
+        });
+        Bar_Description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(getActionBar() != null){
+                    getActionBar().setSelectedNavigationItem(2);
+                }
+            }
+        });
     }
 
     @Override
@@ -102,11 +130,6 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
          * on swiping the viewpager make respective tab selected
          * */
         viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            TextView Event_Feed = (TextView) findViewById(R.id.tab1);
-            TextView Weekly_Events = (TextView) findViewById(R.id.tab2);
-            TextView Bar_Description = (TextView) findViewById(R.id.tab3);
-
             @Override
             public void onPageSelected(int position) {
                 // on changing the page
