@@ -64,6 +64,7 @@ public class APICalls {
                     e.setStartTime(tmp.getString("start_time"));
                     e.setEndTime(tmp.getString("end_time"));
                     e.setFavorites(tmp.getInt("favorites"));
+                    e.setTags(tmp.getJSONArray("spec_tag"));
                     MainActivity.events.add(e);
                     ArrayList<Event> tmpp = eventMap.get(e.getBarId());
                     if(tmpp == null){

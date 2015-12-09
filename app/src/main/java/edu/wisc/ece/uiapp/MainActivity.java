@@ -12,6 +12,7 @@ import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.widget.SearchView;
@@ -41,19 +42,21 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mGeofenceManager = new GeofenceManager(this);
         if (APICalls.barMap.values() == null){
-            Intent i = new Intent(MainActivity.this, SplashScreen.class);
-            startActivity(i);
-            finish();
+            APICalls.getBars(Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude));
+            Log.e("WARNING", "EVENTS MIGHT BE MISSING");
+        }
+        else{
+            Collection<Bar> barList = APICalls.barMap.values();
+            mGeofenceManager.onStart();
+            mGeofenceManager.addGeofences(barList);
+            mGeofenceManager.enableGeofence();
         }
         setContentView(R.layout.activity_main);
 
-        mGeofenceManager = new GeofenceManager(this);
 
-        Collection<Bar> barList = APICalls.barMap.values();
-        mGeofenceManager.onStart();
-        mGeofenceManager.addGeofences(barList);
-        mGeofenceManager.enableGeofence();
+
         mContext = getApplicationContext();
         // Initilization
         mAdapter = new TabsPagerAdapter(getFragmentManager());
