@@ -3,7 +3,11 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp">
+    android:paddingTop="17dp"
+    android:paddingBottom="15dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp">
+
 
     <ImageView
         android:id="@+id/likeable_image"
@@ -15,8 +19,7 @@
         android:id="@+id/groupItem_tv"
         style="@style/NewsFeedSubject"
         android:paddingLeft="0dp"
-        android:layout_toRightOf="@id/likeable_image"
-        />
+        android:layout_toRightOf="@id/likeable_image" />
     <TextView
         android:id="@+id/eventTime"
         style="@style/EventTime"
@@ -25,6 +28,22 @@
         android:layout_below="@id/groupItem_tv"
         />
 
+    <ImageView
+        android:id="@+id/group_likeable_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_action_likeable"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/group_likeable_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/group_likeable_text"
+        android:layout_marginRight="10dp"
+        android:layout_alignEnd="@+id/groupItem_tv"
+        android:layout_alignBottom="@+id/group_likeable_image" />
 
 
 </RelativeLayout>

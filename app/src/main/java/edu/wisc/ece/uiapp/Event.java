@@ -1,5 +1,7 @@
 package edu.wisc.ece.uiapp;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 
 public class Event {
@@ -9,6 +11,7 @@ public class Event {
     String end_time;
     int favorites;
     int barId;
+    String [] tags;
     //users_present
     //spec_tag
     String subject;
@@ -56,7 +59,23 @@ public class Event {
     }
 
     public void setFavorites(int favorites){ this.favorites = favorites;}
+
     public int getFavorites(){ return this.favorites;}
+    public String [] getTags(){
+        return this.tags;
+    }
+
+    public void setTags(JSONArray tags) {
+
+        String[] tagarray = new String[tags.length()];
+        for (int i = 0; i < tags.length(); i++) {
+            try {
+                tagarray[i] = tags.getString(i);
+            } catch (Exception e) {
+            }
+        }
+        this.tags = tagarray;
+    }
 
     // public Time getStartTimeAsTime() {}
 
@@ -73,7 +92,7 @@ public class Event {
     public ArrayList<String> getNewsFeedItems() {
         newsFeedItems = new ArrayList<String>();
         if(this.message != null) {
-            newsFeedItems.add(this.message + "\nStarts: " + this.start_time + "\nEnds: " + this.end_time);
+            newsFeedItems.add(this.message);
         }
         /*if(this.start_time != null) {
             newsFeedItems.add("Starts: " + this.start_time);

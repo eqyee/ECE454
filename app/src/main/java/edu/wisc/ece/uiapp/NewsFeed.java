@@ -2,6 +2,7 @@ package edu.wisc.ece.uiapp;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
@@ -112,6 +113,7 @@ public class NewsFeed extends Fragment {
         adapter.notifyDataSetChanged();
         Log.d("LAT", Double.toString(CurrentLocation.latitude));
         Log.d("LON", Double.toString(CurrentLocation.longitude));
+
         // APICalls.getEvents(getActivity(), Double.toString(MainActivity.myLocation.latitude), Double.toString(MainActivity.myLocation.longitude), radius);
     }
 }
