@@ -159,7 +159,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
 
     @Override
     public void onDestroy(){
+        if (GeofenceIntentService.currentGeofenceId != -1)
+            APICalls.updatePopulation(1,0,GeofenceIntentService.currentGeofenceId);
         super.onDestroy();
+
     }
 
     @Override

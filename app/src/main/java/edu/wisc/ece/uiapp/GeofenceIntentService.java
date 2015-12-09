@@ -29,7 +29,7 @@ public class GeofenceIntentService extends IntentService{
     private static Timer putTimer;
     private static TimerTask putTimerTask;
     private Handler handler = new Handler();
-    private static int currentGeofenceId = -1;
+    public static int currentGeofenceId = -1;
     Handler delayHandler = new Handler();
     public static int waitTime;
     private final int delay = 5000;

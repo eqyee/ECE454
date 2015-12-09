@@ -25,15 +25,12 @@ public class InsideOutside extends Service implements LocationListener{
     private Timer timer;
     private TimerTask timerTask;
     final Handler handler = new Handler();
-    private static Timer locTimer;
-    private TimerTask locTimerTask;
 
     IBinder mBinder;
 
     @Override
     public void onCreate(){
         locationManager = (LocationManager)getApplication().getSystemService(Context.LOCATION_SERVICE);
-        initializeLocTimer();
         initializeTimer();
         timer = new Timer();
     }
@@ -97,6 +94,7 @@ public class InsideOutside extends Service implements LocationListener{
                 handler.post(new Runnable() {
                     public void run() {
                         currentUncertainty = 10000;
+                        stopLocationUpdates();
                         checkInsideProbability();
                     }
                 });
@@ -104,18 +102,6 @@ public class InsideOutside extends Service implements LocationListener{
         };
     }
 
-    private void initializeLocTimer(){
-        locTimerTask = new TimerTask() {
-            public void run() {
-                //use a handler to run a toast that shows the current timestamp
-                handler.post(new Runnable() {
-                    public void run() {
-                        getLocationUpdates();
-                    }
-                });
-            }
-        };
-    }
 
     public void checkInsideProbability(){
         if(currentUncertainty < 60.0){
@@ -126,18 +112,14 @@ public class InsideOutside extends Service implements LocationListener{
             try {
                 locationManager.removeUpdates(this);
             } catch(SecurityException se){}
-            locTimer = new Timer();
-            initializeLocTimer();
-            locTimer.schedule(locTimerTask, 180000);
+
         }
         else if(currentUncertainty > 300){
             MainActivity.inside = true;
             try {
                 locationManager.removeUpdates(this);
             } catch(SecurityException se){}
-            locTimer = new Timer();
-            initializeLocTimer();
-            locTimer.schedule(locTimerTask, 180000);        }
+      }
         else{
             MainActivity.inside = true;
         }
