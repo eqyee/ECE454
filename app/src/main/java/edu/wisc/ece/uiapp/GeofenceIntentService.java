@@ -49,6 +49,7 @@ public class GeofenceIntentService extends IntentService{
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
         int geofenceTransition = event.getGeofenceTransition();
         final List<Geofence> triggeringGeofences = event.getTriggeringGeofences();
+        /* For push notification
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER||
                 geofenceTransition==Geofence.GEOFENCE_TRANSITION_EXIT ) {
 
@@ -60,8 +61,9 @@ public class GeofenceIntentService extends IntentService{
                     triggeringGeofences
             );
 
-            sendNotification(geofenceTransitionDetails);
-        }
+            //This sends a push notification
+            //sendNotification(geofenceTransitionDetails);
+        }*/
 
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
             if(putTimer == null){
@@ -74,7 +76,6 @@ public class GeofenceIntentService extends IntentService{
                         if(GeofenceIntentService.currentGeofenceId == -1) {
                             //TODO: Ask about this.
                             GeofenceIntentService.currentGeofenceId = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
-                            Log.d("Entering3GeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
                             handler.postDelayed(new Runnable() {
                                 public void run() {
                                     Log.d("Entering2GeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
@@ -160,7 +161,12 @@ public class GeofenceIntentService extends IntentService{
         // Get the Ids of each geofence that was triggered.
         ArrayList triggeringGeofencesIdsList = new ArrayList();
         for (Geofence geofence : triggeringGeofences) {
-            triggeringGeofencesIdsList.add(geofence.getRequestId());
+            try {
+                //Log.d("GEOFENCE NOT", APICalls.barMap.get(Integer.parseInt(geofence.getRequestId())).getName());
+
+                triggeringGeofencesIdsList.add(APICalls.barMap.get(Integer.parseInt(geofence.getRequestId())).getName());
+            }catch (Exception e){
+            }
         }
         String triggeringGeofencesIdsString = TextUtils.join(", ", triggeringGeofencesIdsList);
 

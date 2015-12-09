@@ -8,11 +8,6 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp">
 
-    <ImageView
-        android:id="@+id/likeable_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_action_likeable" />
     <TextView
         android:id="@+id/Day"
         style="@style/NewsFeedSubject"

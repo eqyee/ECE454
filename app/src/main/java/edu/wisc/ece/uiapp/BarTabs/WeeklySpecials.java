@@ -19,7 +19,7 @@ import edu.wisc.ece.uiapp.WeekAdapter;
 
 public class WeeklySpecials extends Fragment{
     private ExpandableListView listView;
-    private WeekAdapter Week_adapter;
+    private WeekAdapter week_adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,9 +28,9 @@ public class WeeklySpecials extends Fragment{
 
         listView = (ExpandableListView) rootView.findViewById(R.id.WeekView);
         Log.d("Week Specials", BarInfoActivity.currBar.toString());
-        Week_adapter = new WeekAdapter(getActivity(), BarInfoActivity.currBar.week);
+        week_adapter = new WeekAdapter(getActivity(), BarInfoActivity.currBar.getWeekInfo());
 
-        listView.setAdapter(Week_adapter);
+        listView.setAdapter(week_adapter);
         return rootView;
     }
 }

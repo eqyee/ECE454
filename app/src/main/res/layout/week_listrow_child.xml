@@ -6,14 +6,12 @@
     <TextView
         android:id="@+id/OpenHours"
         style="@style/NewsFeedItems"
-        android:paddingLeft="0dp"
-        android:layout_toRightOf="@id/likeable_image"
+        android:paddingLeft="30dp"
         />
     <TextView
         android:id="@+id/Special"
-        style="@style/EventTime"
-        android:paddingLeft="0dp"
-        android:layout_toRightOf="@id/likeable_image"
+        style="@style/NewsFeedItems"
+        android:paddingLeft="30dp"
         android:layout_below="@id/OpenHours"
         />
 
