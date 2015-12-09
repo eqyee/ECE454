@@ -15,7 +15,7 @@
     <string name="bar_telephone">Bar Telephone Number</string>
     <string name="geofence_transition_enter">Entered Geofence</string>
     <string name="geofence_transition_exit">Exited Geofence</string>
-    <string name="geofence_transition_unknown">Ukniown Geofence Transition</string>
+    <string name="geofence_transition_unknown">Uknown Geofence Transition</string>
     <string name="upcomingevent"><b>Upcoming Event:</b></string>
 
     <!-- copied from geofence sample (onbly used for testing purposes) -->

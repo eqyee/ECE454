@@ -8,9 +8,9 @@ import android.os.Parcelable;
  */
 
 class WeekDay implements Parcelable{
-    public String open;
-    public String close;
-    public String special;
+    String open;
+    String close;
+    String special;
     public WeekDay(String open, String close, String special){
         this.open = open;
         this.close = close;
@@ -34,6 +34,10 @@ class WeekDay implements Parcelable{
         dest.writeString(close);
         dest.writeString(special);
     }
+    public String getOpen(){ return this.open;}
+    public String getClose(){ return this.close;}
+    public String getSepcial(){ return this.special;}
+
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<WeekDay> CREATOR = new Parcelable.Creator<WeekDay>() {
@@ -49,13 +53,13 @@ class WeekDay implements Parcelable{
     };
 }
 class WeekInformation implements Parcelable{
-    public WeekDay monday;
-    public WeekDay tuesday;
-    public WeekDay wednesday;
-    public WeekDay thursday;
-    public WeekDay friday;
-    public WeekDay saturday;
-    public WeekDay sunday;
+     WeekDay monday;
+     WeekDay tuesday;
+     WeekDay wednesday;
+     WeekDay thursday;
+     WeekDay friday;
+     WeekDay saturday;
+     WeekDay sunday;
     public WeekInformation(WeekDay sunday, WeekDay monday, WeekDay tuesday, WeekDay wednesday,
                            WeekDay thursday, WeekDay friday, WeekDay saturday){
             this.sunday = sunday;
@@ -66,6 +70,14 @@ class WeekInformation implements Parcelable{
             this.friday = friday;
             this.saturday = saturday;
     }
+
+    public WeekDay getMonday(){return this.monday;}
+    public WeekDay getTuesday(){return this.tuesday;}
+    public WeekDay getWednesday(){return this.wednesday;}
+    public WeekDay getThursday(){return this.thursday;}
+    public WeekDay getFriday(){return this.friday;}
+    public WeekDay getSaturday(){return this.saturday;}
+    public WeekDay getSunday(){return this.sunday;}
 
     protected WeekInformation(Parcel in) {
         monday = (WeekDay) in.readValue(WeekDay.class.getClassLoader());

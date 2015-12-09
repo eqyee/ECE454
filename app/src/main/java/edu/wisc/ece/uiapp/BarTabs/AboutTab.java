@@ -26,7 +26,7 @@ public class AboutTab extends Fragment {
 
             listView = (ExpandableListView) rootView.findViewById(R.id.WeekView);
             Log.d("Week Specials", BarInfoActivity.currBar.toString());
-            Week_adapter = new WeekAdapter(getActivity(), BarInfoActivity.currBar.week);
+            Week_adapter = new WeekAdapter(getActivity(), BarInfoActivity.currBar.getWeekInfo());
 
             listView.setAdapter(Week_adapter);
             return rootView;

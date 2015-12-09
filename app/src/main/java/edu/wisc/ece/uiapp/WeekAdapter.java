@@ -69,17 +69,17 @@ public class WeekAdapter extends BaseExpandableListAdapter {
         try {
             if(day.open.isEmpty())
             {
-                time.setText("CLOSED");
+                time.setText("Closed");
             }else {
-                time.setText("Hours Of Operation: " + day.open + "-" + day.close);
+                time.setText("Hours of Operation: " + day.getOpen() + " - " + day.getClose());
             }
         }catch (NullPointerException npe){
             time.setText("Bar Hours Not Found");
         }
         try {
-            special.setText(day.special);
+            special.setText(day.getSepcial());
         }catch(NullPointerException npe){
-            special.setText("No Daily Specials Found");
+            special.setText("");
         }
 
         return convertView;
@@ -128,28 +128,27 @@ public class WeekAdapter extends BaseExpandableListAdapter {
 
     public WeekDay getWeekDayFrom(int position, WeekInformation week){
         WeekDay day = null;
-        Log.d("WEEK", ""+position);
             switch (position){
                 case 0:
-                    day = week.monday;
+                    day = week.getMonday();
                     break;
                 case 1:
-                    day =  week.tuesday;
+                    day =  week.getTuesday();
                     break;
                 case 2:
-                    day =  week.wednesday;
+                    day =  week.getWednesday();
                     break;
                 case 3:
-                    day = week.thursday;
+                    day = week.getThursday();
                     break;
                 case 4:
-                    day =  week.friday;
+                    day =  week.getFriday();
                     break;
                 case 5:
-                    day =  week.saturday;
+                    day =  week.getSaturday();
                     break;
                 case 6:
-                    day =  week.sunday;
+                    day =  week.getSunday();
                     break;
             }
         return day;

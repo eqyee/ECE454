@@ -17,7 +17,10 @@ public class Bar implements Parcelable {
     LatLng location;
     int id;
     int patrons;
-    public WeekInformation week;
+    WeekInformation week;
+
+
+
     String address;
     String state;
     int zipcode;
@@ -28,7 +31,6 @@ public class Bar implements Parcelable {
         this.name = name;
 
     }
-
     public String getName() {
         return this.name;
     }
@@ -92,6 +94,7 @@ public class Bar implements Parcelable {
         catch (Exception e){}
         this.week = week;
     }
+    public WeekInformation getWeekInfo(){return this.week;}
 
 
     protected Bar(Parcel in) {
