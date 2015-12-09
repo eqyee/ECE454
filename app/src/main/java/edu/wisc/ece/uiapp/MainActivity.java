@@ -175,9 +175,6 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        /* If onDestroyView() is called first, we can use the previously savedState but we can't call saveState() anymore */
-        /* If onSaveInstanceState() is called first, we don't have savedState, so we need to call saveState() */
-        /* => (?:) operator inevitable! */
         outState.putSerializable("barMap", APICalls.barMap);
         outState.putSerializable("eventMap", APICalls.eventMap);
         Log.e("Parceable", "Put Parceables!");

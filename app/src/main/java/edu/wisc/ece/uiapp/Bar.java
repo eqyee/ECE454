@@ -18,6 +18,11 @@ public class Bar implements Parcelable {
     int id;
     int patrons;
     WeekInformation week;
+    String address;
+    String state;
+    int zipcode;
+    String phone;
+    String city;
 
     public Bar(String name) {
         this.name = name;
@@ -31,6 +36,22 @@ public class Bar implements Parcelable {
     public void setId(int id){ this.id = id ;}
     public int getPatrons(){return this.patrons;}
     public void setPatrons(int patrons){ this.patrons = patrons ;}
+
+    public int getZipcode(){return this.zipcode;}
+    public void setZipcode(int zipcode){ this.zipcode = zipcode ;}
+
+    public String getAddress(){return this.address;}
+    public void setAddress(String address){ this.address = address ;}
+
+    public String getState(){return this.state;}
+    public void setState(String state){ this.state = state ;}
+
+    public String getCity(){return this.city;}
+    public void setCity(String city){ this.city = city ;}
+
+    public String getPhone(){return this.phone;}
+    public void setPhone(String phone){ this.phone = phone ;}
+
     public void setLocation(LatLng location){this.location = location;}
     public LatLng getLocation(){ return this.location;}
     public void setSSID(String ssid) {
@@ -75,6 +96,11 @@ public class Bar implements Parcelable {
         id = in.readInt();
         patrons = in.readInt();
         week = (WeekInformation) in.readValue(WeekInformation.class.getClassLoader());
+        address = in.readString();
+        state = in.readString();
+        zipcode = in.readInt();
+        phone = in.readString();
+        city = in.readString();
     }
 
     @Override
@@ -90,6 +116,12 @@ public class Bar implements Parcelable {
         dest.writeInt(id);
         dest.writeInt(patrons);
         dest.writeValue(week);
+        dest.writeString(address);
+        dest.writeString(state);
+        dest.writeInt(zipcode);
+        dest.writeString(phone);
+        dest.writeString(city);
+
     }
 
     @SuppressWarnings("unused")
