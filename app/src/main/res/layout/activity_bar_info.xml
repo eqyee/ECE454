@@ -29,11 +29,20 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/bar_telephone"
+        android:textColor="#000000"
+        android:id="@+id/bar_telephone_tv"
+        android:layout_below="@+id/bar_location_tv"
+        android:layout_alignStart="@+id/bar_name_text" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Event Feed"
         android:id="@+id/tab1"
         android:layout_marginRight="0dip"
         android:layout_marginLeft="10dip"
-        android:layout_below="@id/bar_location_tv"
+        android:layout_below="@id/bar_telephone_tv"
         android:layout_weight="1"
         android:gravity="left"
         />
@@ -50,10 +59,10 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="XXXXXX"
+        android:text="Bar Description"
         android:id="@+id/tab3"
         android:layout_toRightOf="@id/tab2"
-        android:layout_below="@id/bar_location_tv"
+        android:layout_below="@id/bar_telephone_tv"
         android:layout_marginLeft="10dip"
         android:layout_weight="1"
        />

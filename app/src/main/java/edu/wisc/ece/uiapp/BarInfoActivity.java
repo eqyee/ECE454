@@ -6,8 +6,11 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class BarInfoActivity extends FragmentActivity implements ActionBar.TabListener {
     public static int barId;
@@ -15,6 +18,7 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
 
     private TextView barName_tv;
     private TextView barLocation_tv;
+    private TextView barTelephone_tv;
 
     public static Bar currBar;
 
@@ -23,7 +27,7 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
     private ActionBar actionBar;
 
     // Tab titles
-    private String[] tabs = { "Event Feed",  "Weekly Specials", "XXXXXX" };
+    private String[] tabs = { "Event Feed",  "Weekly Specials", "Description" };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,14 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
         setUpPager();
         setUpActionbar();
         actionBar.hide();
+
+        TextView Event_Feed = (TextView) findViewById(R.id.tab1);
+        TextView Weekly_Events = (TextView) findViewById(R.id.tab2);
+        TextView Bar_Description = (TextView) findViewById(R.id.tab3);
+
+        Event_Feed.setBackgroundColor(Color.BLUE);
+        Weekly_Events.setBackgroundColor(Color.WHITE);
+        Bar_Description.setBackgroundColor(Color.WHITE);
     }
 
 
@@ -53,6 +65,8 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
     private void getViews() {
         barName_tv = (TextView) findViewById(R.id.bar_name_text);
         barLocation_tv = (TextView) findViewById(R.id.bar_location_tv);
+        barTelephone_tv = (TextView) findViewById(R.id.bar_telephone_tv);
+
 
     }
 
@@ -60,7 +74,8 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
     private void setViews() {
         barName_tv.setText(currBar.getName());
         //Probably need to do something with the getLocation
-        barLocation_tv.setText(currBar.getLocation().toString());
+        barLocation_tv.setText(currBar.getFullAddress());
+        barTelephone_tv.setText(currBar.getPhone());
     }
 
     @Override
@@ -90,7 +105,7 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
 
             TextView Event_Feed = (TextView) findViewById(R.id.tab1);
             TextView Weekly_Events = (TextView) findViewById(R.id.tab2);
-            TextView XXX = (TextView) findViewById(R.id.tab3);
+            TextView Bar_Description = (TextView) findViewById(R.id.tab3);
 
             @Override
             public void onPageSelected(int position) {
@@ -102,22 +117,22 @@ public class BarInfoActivity extends FragmentActivity implements ActionBar.TabLi
                     case 0:
                         Event_Feed.setBackgroundColor(Color.BLUE);
                         Weekly_Events.setBackgroundColor(Color.WHITE);
-                        XXX.setBackgroundColor(Color.WHITE);
+                        Bar_Description.setBackgroundColor(Color.WHITE);
                         break;
                     case 1:
                         Event_Feed.setBackgroundColor(Color.WHITE);
                         Weekly_Events.setBackgroundColor(Color.BLUE);
-                        XXX.setBackgroundColor(Color.WHITE);
+                        Bar_Description.setBackgroundColor(Color.WHITE);
                         break;
                     case 2:
                         Event_Feed.setBackgroundColor(Color.WHITE);
                         Weekly_Events.setBackgroundColor(Color.WHITE);
-                        XXX.setBackgroundColor(Color.BLUE);
+                        Bar_Description.setBackgroundColor(Color.BLUE);
                         break;
                     default:
                         Event_Feed.setBackgroundColor(Color.BLUE);
                         Weekly_Events.setBackgroundColor(Color.BLUE);
-                        XXX.setBackgroundColor(Color.BLUE);
+                        Bar_Description.setBackgroundColor(Color.BLUE);
                         break;
                 }
             }

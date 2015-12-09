@@ -27,7 +27,7 @@ import java.util.ArrayList;
 public class ArrayAdapter extends BaseExpandableListAdapter {
 
     private final String LIKEABLE_STRING = "Cheers!";
-
+    private boolean inBarProfile = false;
     private final ArrayList<Event> events;
     public LayoutInflater inflater;
     public Activity activity;
@@ -35,6 +35,12 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
     public ArrayAdapter(Activity activity, ArrayList<Event> events) {
         this.activity = activity;
         this.events = events;
+        inflater = activity.getLayoutInflater();
+    }
+    public ArrayAdapter(Activity activity, boolean inBarProfile, ArrayList<Event> events) {
+        this.activity = activity;
+        this.events = events;
+        this.inBarProfile = inBarProfile;
         inflater = activity.getLayoutInflater();
     }
 
@@ -52,14 +58,19 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
     public View getChildView(int position, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         final int eventPosition = position;
         final String eventItem = (String) getChild(position, childPosition);
-
+        Event currentEvent = events.get(eventPosition);
         TextView text = null;
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_child, null);
         }
         text = (TextView) convertView.findViewById(R.id.event_details_tv);
+        TextView tags = (TextView) convertView.findViewById(R.id.tags);
         text.setText(eventItem);
-
+        String tagString = "Tags: ";
+        for(int i=0; i<currentEvent.tags.length;i++){
+            tagString += currentEvent.tags[i] + " ";
+        }
+        tags.setText(tagString);
         final View view = convertView;
         if(inBarProfile == false) {
             convertView.setOnClickListener(new OnClickListener() {
@@ -78,6 +89,43 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+//    private void setLikeableListeners(View convertView, final String favorites) {
+//        ImageView likeImage = (ImageView) convertView.findViewById(R.id.likeable_image_child);
+//        final TextView likeText = (TextView) convertView.findViewById(R.id.likeable_tv_child);
+//
+//        OnClickListener myListener = new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(likeText.getText() == LIKEABLE_STRING) {
+//                    likeText.setText(favorites);
+//                }
+//                else {
+//                    likeText.setText(LIKEABLE_STRING);
+//                }
+//            }
+//        };
+//
+//        likeImage.setOnClickListener(myListener);
+//        likeText.setOnClickListener(myListener);
+//    }
+    private void setGroupLikeableListeners(View convertView, final String favorites, final Event event) {
+        ImageView likeImage = (ImageView) convertView.findViewById(R.id.group_likeable_image);
+        final TextView likeText = (TextView) convertView.findViewById(R.id.group_likeable_text);
+
+        final OnClickListener myListener = new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int value = event.getFavorites();
+                value += 1;
+                likeText.setText(Integer.toString(value));
+                event.setFavorites(value);
+
+            }
+        };
+        likeText.setText(Integer.toString(event.getFavorites()));
+        likeImage.setOnClickListener(myListener);
+        likeText.setOnClickListener(myListener);
+    }
 
 
     @Override
@@ -115,7 +163,7 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.listrow_group, null);
         }
-        Event event = (Event) getGroup(position);
+        final Event event = (Event) getGroup(position);
         String pattern = "yyyy-MM-dd'T'HH:mm:ssZ";
         DateTimeFormatter dtf = DateTimeFormat.forPattern(pattern);
         DateTimeFormatter endF = DateTimeFormat.forPattern("hh:mm a");
@@ -143,6 +191,7 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
         TextView eventTextView = (TextView)convertView.findViewById(R.id.eventTime);
         itemTextView.setText(APICalls.barMap.get(event.getBarId()).getName() + " - " + event.getSubject());
         eventTextView.setText(startS + " - " + endS);
+        setGroupLikeableListeners(convertView, Integer.toString(event.getFavorites()), event);
         /*itemTextView.setOnClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {

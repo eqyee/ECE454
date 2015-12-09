@@ -23,7 +23,7 @@ public class EventFeed extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_event_feed, container, false);
         listView = (ExpandableListView) rootView.findViewById(R.id.listView);
-        adapter = new ArrayAdapter(getActivity(), false, APICalls.eventMap.get(BarInfoActivity.barId));
+        adapter = new ArrayAdapter(getActivity(), true, APICalls.eventMap.get(BarInfoActivity.barId));
         listView.setAdapter(adapter);
 
         return rootView;

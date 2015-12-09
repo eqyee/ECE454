@@ -5,14 +5,14 @@
     android:layout_height="wrap_content"
     android:background="#FFFFFF">
 
-    <ListView
-        android:id="@+id/listView"
+    <ExpandableListView
+        android:id="@+id/WeekView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:groupIndicator="@android:color/transparent"
         android:childDivider="#00000000"
         android:dividerHeight="2dp"
         android:divider="@color/common_signin_btn_light_text_default">
-    </ListView>
+    </ExpandableListView>
 
 </RelativeLayout>

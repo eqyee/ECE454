@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/OpenHours"
+        style="@style/NewsFeedItems"
+        android:paddingLeft="0dp"
+        android:layout_toRightOf="@id/likeable_image"
+        />
+    <TextView
+        android:id="@+id/Special"
+        style="@style/EventTime"
+        android:paddingLeft="0dp"
+        android:layout_toRightOf="@id/likeable_image"
+        android:layout_below="@id/OpenHours"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/Special"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp" />
+</RelativeLayout>

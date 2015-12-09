@@ -3,16 +3,14 @@ package edu.wisc.ece.uiapp;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 /**
  * Created by CCS on 12/8/2015.
  */
 
-class WeekDay implements Parcelable {
-    String open;
-    String close;
-    String special;
+class WeekDay implements Parcelable{
+    public String open;
+    public String close;
+    public String special;
     public WeekDay(String open, String close, String special){
         this.open = open;
         this.close = close;
@@ -50,23 +48,23 @@ class WeekDay implements Parcelable {
         }
     };
 }
-class WeekInformation implements Parcelable {
-    WeekDay monday;
-    WeekDay tuesday;
-    WeekDay wednesday;
-    WeekDay thursday;
-    WeekDay friday;
-    WeekDay saturday;
-    WeekDay sunday;
+class WeekInformation implements Parcelable{
+    public WeekDay monday;
+    public WeekDay tuesday;
+    public WeekDay wednesday;
+    public WeekDay thursday;
+    public WeekDay friday;
+    public WeekDay saturday;
+    public WeekDay sunday;
     public WeekInformation(WeekDay sunday, WeekDay monday, WeekDay tuesday, WeekDay wednesday,
                            WeekDay thursday, WeekDay friday, WeekDay saturday){
-        this.sunday = sunday;
-        this.monday = monday;
-        this.tuesday = tuesday;
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
+            this.sunday = sunday;
+            this.monday = monday;
+            this.tuesday = tuesday;
+            this.wednesday = wednesday;
+            this.thursday = thursday;
+            this.friday = friday;
+            this.saturday = saturday;
     }
 
     protected WeekInformation(Parcel in) {

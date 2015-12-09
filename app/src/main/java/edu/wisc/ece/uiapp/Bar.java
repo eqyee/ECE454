@@ -17,7 +17,7 @@ public class Bar implements Parcelable {
     LatLng location;
     int id;
     int patrons;
-    WeekInformation week;
+    public WeekInformation week;
     String address;
     String state;
     int zipcode;
@@ -54,6 +54,11 @@ public class Bar implements Parcelable {
 
     public void setLocation(LatLng location){this.location = location;}
     public LatLng getLocation(){ return this.location;}
+    public String getFullAddress(){
+        String fullAddress = "";
+        fullAddress = getAddress() + ", " + getCity() + ", " + getState() + ", " + getZipcode();
+        return fullAddress;
+    };
     public void setSSID(String ssid) {
         this.ssid = ssid;
     }
