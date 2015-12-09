@@ -153,6 +153,10 @@ public class APICalls {
                     Log.d("Fill Bars", bar.name);
                     bar.setId(tmp.getInt("id"));
                     bar.setPatrons(tmp.getInt("patrons"));
+                    bar.setAddress(tmp.getString("address"));
+                    bar.setCity(tmp.getString("city"));
+                    bar.setPhone(tmp.getString("phone"));
+                    bar.setState(tmp.getString("state"));
                     bar.setWeekly(tmp.getJSONObject("weekly_data"));
                     Log.d("SundayBar", bar.week.sunday.special);
                     String parse = tmp.getString("location");
