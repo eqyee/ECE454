@@ -158,6 +158,7 @@ public class APICalls {
                     bar.setPhone(tmp.getString("phone"));
                     bar.setState(tmp.getString("state"));
                     bar.setWeekly(tmp.getJSONObject("weekly_data"));
+                    bar.setWait(tmp.getInt("wait_time"));
                     //bar.setZipcode(tmp.getInt("zipcode"));
                     Log.d("SundayBar", bar.week.sunday.special);
                     String parse = tmp.getString("location");

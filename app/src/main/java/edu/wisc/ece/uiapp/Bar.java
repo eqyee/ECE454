@@ -23,6 +23,7 @@ public class Bar implements Parcelable {
     int zipcode;
     String phone;
     String city;
+    int waitTime;
 
     public Bar(String name) {
         this.name = name;
@@ -42,6 +43,9 @@ public class Bar implements Parcelable {
 
     public String getAddress(){return this.address;}
     public void setAddress(String address){ this.address = address ;}
+
+    public int getWait(){return this.waitTime;}
+    public void setWait(int waitTime){ this.waitTime = waitTime ;}
 
     public String getState(){return this.state;}
     public void setState(String state){ this.state = state ;}
@@ -106,6 +110,7 @@ public class Bar implements Parcelable {
         zipcode = in.readInt();
         phone = in.readString();
         city = in.readString();
+        waitTime = in.readInt();
     }
 
     @Override
@@ -126,6 +131,7 @@ public class Bar implements Parcelable {
         dest.writeInt(zipcode);
         dest.writeString(phone);
         dest.writeString(city);
+        dest.writeInt(waitTime);
 
     }
 

@@ -29,12 +29,20 @@ class CustomInfoWindow implements GoogleMap.InfoWindowAdapter {
         View popup=inflater.inflate(R.layout.infowindow, null);
 
         TextView tv=(TextView)popup.findViewById(R.id.title);
+        TextView waitTime=(TextView)popup.findViewById(R.id.waitTime);
         String tempString = marker.getTitle();
         SpannableString spanString = new SpannableString(tempString);
         spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
         tv.setText(spanString);
         tv=(TextView)popup.findViewById(R.id.snippet);
+        int barId = HeatMap.markers.get(marker);
+        int wait = APICalls.barMap.get(barId).getWait();
+        wait = wait;
+        waitTime.setText("Est. wait time: " + wait);
+
         tv.setText(marker.getSnippet());
+
+
 
         return(popup);
     }

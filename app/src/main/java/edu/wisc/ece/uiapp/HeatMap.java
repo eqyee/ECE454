@@ -54,7 +54,7 @@ public class HeatMap extends Fragment implements OnMapReadyCallback {
     private CustomInfoWindow customInfoWindow;
     public static Handler searchHandler = new Handler();
 
-    HashMap<Marker, Integer> markers;
+    public static HashMap<Marker, Integer> markers;
     ArrayList<Marker> markerArray;
 
     public static final String EVENT_POSITION = "EventId";
