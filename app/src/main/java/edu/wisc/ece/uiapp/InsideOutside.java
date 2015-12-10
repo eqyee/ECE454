@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -39,6 +38,10 @@ public class InsideOutside extends Service implements LocationListener{
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
+        uncertaintyPosition = 0;
+        for(int i = 0; i < 7; i++){
+            uncertainty[i] = 0;
+        }
         getLocationUpdates();
         timer.purge();
         timer = new Timer();
