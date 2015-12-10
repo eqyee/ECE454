@@ -47,6 +47,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         try{
             APICalls.barMap = (HashMap<Integer, Bar>) savedInstanceState.getSerializable("barMap");
             APICalls.eventMap = (HashMap<Integer, ArrayList<Event>>) savedInstanceState.getSerializable("eventMap");
+            MainActivity.events = (ArrayList<Event>) savedInstanceState.getSerializable("events");
             Log.e("Restore", "Restoring from bundle!");
         }
         catch(Exception e){
@@ -180,6 +181,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onSaveInstanceState(outState);
         outState.putSerializable("barMap", APICalls.barMap);
         outState.putSerializable("eventMap", APICalls.eventMap);
+        outState.putSerializable("events", MainActivity.events);
         Log.e("Parceable", "Put Parceables!");
     }
 

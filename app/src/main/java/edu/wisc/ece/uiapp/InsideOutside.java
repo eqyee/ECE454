@@ -21,7 +21,7 @@ import java.util.TimerTask;
 public class InsideOutside extends Service implements LocationListener{
 
     protected LocationManager locationManager;
-    private ArrayList<Double> uncertainty = new ArrayList<>(7);
+    private double []uncertainty = new double [7];
     private int uncertaintyPosition = 0;
 
     private Timer timer;
@@ -40,6 +40,10 @@ public class InsideOutside extends Service implements LocationListener{
     @Override
     public int onStartCommand(Intent intent, int flags, int startId){
         getLocationUpdates();
+        timer.purge();
+        timer = new Timer();
+        initializeTimer();
+        timer.schedule(timerTask, 180000);
         Log.e("Inside/Outside", "Starting inside/outside detection");
         return 1;
     }
@@ -75,7 +79,7 @@ public class InsideOutside extends Service implements LocationListener{
         CurrentLocation.longitude = location.getLongitude();
         try {
             timer.purge();
-            uncertainty.add(uncertaintyPosition, (double) location.getAccuracy());
+            uncertainty[uncertaintyPosition]= (double) location.getAccuracy();
             uncertaintyPosition = (uncertaintyPosition + 1) % 7;
             timer = new Timer();
             checkInsideProbability();
@@ -97,7 +101,7 @@ public class InsideOutside extends Service implements LocationListener{
                 handler.post(new Runnable() {
                     public void run() {
                         for(int i = 0; i < 7; i++) {
-                            uncertainty.add(i, 10000.0);
+                            uncertainty[i] = 10000.0;
                         }
                         stopLocationUpdates();
                         checkInsideProbability();
@@ -137,10 +141,7 @@ public class InsideOutside extends Service implements LocationListener{
         else{
             MainActivity.inside = true;
         }
-        Log.w("Inside/Outside", "" + MainActivity.inside + " : " +
-                uncertainty.get(0) + "," + uncertainty.get(1) + "," + uncertainty.get(2) + "," +
-                uncertainty.get(3) + "," + uncertainty.get(4) + "," + uncertainty.get(5) + "," +
-                uncertainty.get(6) + "," + uncertainty.get(7));
+
     }
 
 

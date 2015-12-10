@@ -66,6 +66,7 @@ public class GeofenceIntentService extends IntentService{
         }*/
 
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
+            MainActivity.inside = false;
             if(putTimer == null){
                 putTimer = new Timer();
                 Log.d("Entering", triggeringGeofences.get(0).getRequestId());
@@ -78,8 +79,6 @@ public class GeofenceIntentService extends IntentService{
                             GeofenceIntentService.currentGeofenceId = Integer.parseInt(triggeringGeofences.get(0).getRequestId());
                             handler.postDelayed(new Runnable() {
                                 public void run() {
-                                    Log.d("Entering2GeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
-                                    //TODO: DECIDE WHEN INSIDE USING INSIDE/OUTSIDE
                                     if (MainActivity.inside) {
                                         APICalls.updatePopulation(0, getWaitTime(), Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
                                         Log.d("Sending server call", Integer.toString(getWaitTime()));
