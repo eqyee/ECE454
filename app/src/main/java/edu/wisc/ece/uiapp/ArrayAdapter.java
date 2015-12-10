@@ -28,7 +28,7 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
 
     private final String LIKEABLE_STRING = "Cheers!";
     private boolean inBarProfile = false;
-    private final ArrayList<Event> events;
+    private ArrayList<Event> events;
     public LayoutInflater inflater;
     public Activity activity;
 
@@ -42,6 +42,9 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
         this.events = events;
         this.inBarProfile = inBarProfile;
         inflater = activity.getLayoutInflater();
+    }
+    public void dataChanged( ArrayList<Event> events) {
+        this.events = events;
     }
 
     @Override
@@ -189,9 +192,13 @@ public class ArrayAdapter extends BaseExpandableListAdapter {
 
         TextView itemTextView = (TextView)convertView.findViewById(R.id.groupItem_tv);
         TextView eventTextView = (TextView)convertView.findViewById(R.id.eventTime);
-        itemTextView.setText(APICalls.barMap.get(event.getBarId()).getName() + " - " + event.getSubject());
-        eventTextView.setText(startS + " - " + endS);
-        setGroupLikeableListeners(convertView, Integer.toString(event.getFavorites()), event);
+        try{
+            itemTextView.setText(APICalls.barMap.get(event.getBarId()).getName() + " - " + event.getSubject());
+            eventTextView.setText(startS + " - " + endS);
+            setGroupLikeableListeners(convertView, Integer.toString(event.getFavorites()), event);
+        }catch (NullPointerException npe){
+            return convertView;
+        }
         /*itemTextView.setOnClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
