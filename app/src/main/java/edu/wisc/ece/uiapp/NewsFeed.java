@@ -84,14 +84,17 @@ public class NewsFeed extends Fragment {
         super.onResume();
     }
 
-    public static void eventsListDataHasChanged() {
+    public static void eventsListDataHasChanged(ArrayList<Event> changedList) {
         if(adapter != null) {
             adapter.notifyDataSetChanged();
+            adapter.dataChanged(changedList);
         }
     }
 
     public static void launchBarInfo(Context context, int barId, int eventPosition) {
-        Log.d("NewsFeed", "Child Item Clicked");
+            if(APICalls.barMap.get(barId) == null){
+                return;
+            }
         Activity activity = (Activity) context;
         Intent i = new Intent(activity, BarInfoActivity.class);
 
@@ -113,7 +116,7 @@ public class NewsFeed extends Fragment {
         adapter.notifyDataSetChanged();
         Log.d("LAT", Double.toString(CurrentLocation.latitude));
         Log.d("LON", Double.toString(CurrentLocation.longitude));
-
+        //adapter.dataChanged(MainActivity.events);
         // APICalls.getEvents(getActivity(), Double.toString(MainActivity.myLocation.latitude), Double.toString(MainActivity.myLocation.longitude), radius);
     }
 }

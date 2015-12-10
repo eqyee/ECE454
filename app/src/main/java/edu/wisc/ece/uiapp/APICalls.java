@@ -126,7 +126,7 @@ public class APICalls {
         @Override
         protected void onPostExecute(JSONArray res) {
             APICalls.fillEvents(res);
-            NewsFeed.eventsListDataHasChanged();
+            NewsFeed.eventsListDataHasChanged(MainActivity.events);
             ExpandableListView lview = (ExpandableListView) mActivity.findViewById(R.id.listView);
             ((BaseExpandableListAdapter)lview.getExpandableListAdapter()).notifyDataSetChanged();
             NewsFeed.mSwipeRefreshLayout.setRefreshing(false);
@@ -140,8 +140,6 @@ public class APICalls {
         strs[0] = latitude;
         strs[1] = longitude;
         hi.execute(strs);
-
-
     }
     public static void fillBars(JSONArray bars){
         barMap = new HashMap<Integer, Bar>();
@@ -201,6 +199,7 @@ public class APICalls {
             } catch (IOException e) {
                 System.out.println("HTTP IO Exception.");
                 e.printStackTrace();
+                return new JSONArray();
             }
             JSONArray jsonArray;
             try {
