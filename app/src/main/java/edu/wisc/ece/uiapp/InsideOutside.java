@@ -1,54 +1,71 @@
 package edu.wisc.ece.uiapp;
 
-import android.app.Service;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by Evan Yee on 11/2/2015.
  */
-public class InsideOutside extends Service implements LocationListener{
+public class InsideOutside extends NonStopIntentService implements LocationListener{
 
     protected LocationManager locationManager;
-    private double []uncertainty = new double [7];
+    public static double []uncertainty = new double [7];
     private int uncertaintyPosition = 0;
 
-    private Timer timer;
-    private TimerTask timerTask;
     final Handler handler = new Handler();
 
     IBinder mBinder;
 
+    public InsideOutside(){
+        super("InsideOutside");
+
+    }
     @Override
     public void onCreate(){
-        locationManager = (LocationManager)getApplication().getSystemService(Context.LOCATION_SERVICE);
-        initializeTimer();
-        timer = new Timer();
+        super.onCreate();
+        locationManager = (LocationManager)getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId){
+    public void onHandleIntent(Intent intent){
         uncertaintyPosition = 0;
         for(int i = 0; i < 7; i++){
             uncertainty[i] = 0;
         }
         getLocationUpdates();
-        timer.purge();
-        timer = new Timer();
-        initializeTimer();
-        timer.schedule(timerTask, 180000);
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                        for(int i = 0; i < 7; i++) {
+                            uncertainty[i] = 10000.0;
+                        }
+                        stopLocationUpdates();
+                        checkInsideProbability();
+            }
+        }, 180000);
         Log.e("Inside/Outside", "Starting inside/outside detection");
-        return 1;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId)
+    {
+        super.onStartCommand(intent, flags, startId);
+
+        // Don't let this service restart automatically if it has been stopped by the OS.
+        return START_STICKY;
     }
 
     @Override
@@ -81,13 +98,25 @@ public class InsideOutside extends Service implements LocationListener{
         CurrentLocation.latitude = location.getLatitude();
         CurrentLocation.longitude = location.getLongitude();
         try {
-            timer.purge();
+            handler.removeCallbacksAndMessages(null);
             uncertainty[uncertaintyPosition]= (double) location.getAccuracy();
             uncertaintyPosition = (uncertaintyPosition + 1) % 7;
-            timer = new Timer();
             checkInsideProbability();
-            initializeTimer();
-            timer.schedule(timerTask, 180000);
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    for(int i = 0; i < 7; i++) {
+                        uncertainty[i] = 10000.0;
+                    }
+                    stopLocationUpdates();
+                    checkInsideProbability();
+                }
+            }, 180000);
+            String message = "";
+            for(Double curr : uncertainty){
+                message += curr + " , ";
+            }
+            sendNotification(message);
         }
         catch(NullPointerException e){
             Log.e("Inside/Outside", e.getMessage());
@@ -97,42 +126,24 @@ public class InsideOutside extends Service implements LocationListener{
         }
     }
 
-    private void initializeTimer(){
-        timerTask = new TimerTask() {
-            public void run() {
-                //use a handler to run a toast that shows the current timestamp
-                handler.post(new Runnable() {
-                    public void run() {
-                        for(int i = 0; i < 7; i++) {
-                            uncertainty[i] = 10000.0;
-                        }
-                        stopLocationUpdates();
-                        checkInsideProbability();
-                    }
-                });
-            }
-        };
-    }
-
-
     public void checkInsideProbability(){
-        int inside = 1;
-        int certainCount = 0;
+        int inside = 0;
+        int insideCount = 0;
         for(Double curr : uncertainty){
-            if(curr < 60.0) {
-                certainCount++;
+            if(curr > 60.0 && curr < 9999) {
+                insideCount++;
             }
-            else if(curr > 9999){
+            else if(curr >= 9999){
                 inside = 2;
                 break;
             }
-            if(certainCount > 1){
-                inside = 0;
+            if(insideCount > 4){
+                inside = 1;
                 break;
             }
         }
         if(inside == 1){
-            MainActivity.inside = false;
+            MainActivity.inside = true;
         }
         else if(inside == 2){
             MainActivity.inside = true;
@@ -142,7 +153,7 @@ public class InsideOutside extends Service implements LocationListener{
 
         }
         else{
-            MainActivity.inside = true;
+            MainActivity.inside = false;
         }
 
     }
@@ -159,6 +170,50 @@ public class InsideOutside extends Service implements LocationListener{
         Log.e("Inside/Outside", "Stopping inside/outside detection");
         stopLocationUpdates();
         super.onDestroy();
+    }
+
+    //Just the copied notification
+    private void sendNotification(String notificationDetails) {
+        // Create an explicit content Intent that starts the main Activity.
+        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+
+        // Construct a task stack.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+
+        // Add the main Activity to the task stack as the parent.
+        stackBuilder.addParentStack(MainActivity.class);
+
+        // Push the content Intent onto the stack.
+        stackBuilder.addNextIntent(notificationIntent);
+
+        // Get a PendingIntent containing the entire back stack.
+        PendingIntent notificationPendingIntent =
+                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Get a notification builder that's compatible with platform versions >= 4
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+
+        // Define the notification settings.
+        builder.setSmallIcon(R.drawable.ic_action_likeable)
+                // In a real app, you may want to use a library like Volley
+                // to decode the Bitmap.
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),
+                        R.drawable.ic_action_likeable))
+                .setColor(Color.RED)
+                .setContentTitle("Uncertainties")
+                .setContentText(notificationDetails)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationDetails))
+                .setContentIntent(notificationPendingIntent);
+
+        // Dismiss notification once the user touches it.
+        builder.setAutoCancel(true);
+
+        // Get an instance of the Notification manager
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // Issue the notification
+        mNotificationManager.notify(0, builder.build());
     }
 
 }

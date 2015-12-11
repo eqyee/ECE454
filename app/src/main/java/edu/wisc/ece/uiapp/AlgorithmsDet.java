@@ -33,8 +33,8 @@ public class AlgorithmsDet {
         int sec_runner = pointer -1;
         int total = 0;
         int mistakes_in_row = 0;
-        if (isInside != true){
-            while(LINESTORAGE[sec_runner] != null && sec_runner != pointer){
+        if (MainActivity.inside != true){
+            while( sec_runner != -1 && LINESTORAGE[sec_runner] != null && sec_runner != pointer){
                 sec_runner -= 1;
                 runner -= 1;
                 if (runner < 0){

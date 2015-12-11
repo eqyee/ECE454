@@ -6,7 +6,6 @@ import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
@@ -183,6 +182,10 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         outState.putSerializable("eventMap", APICalls.eventMap);
         outState.putSerializable("events", MainActivity.events);
         Log.e("Parceable", "Put Parceables!");
+    }
+
+    public static Context getContext(){
+        return mContext;
     }
 
 }

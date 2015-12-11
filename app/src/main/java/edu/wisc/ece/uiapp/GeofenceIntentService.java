@@ -34,7 +34,7 @@ public class GeofenceIntentService extends IntentService{
     public static int waitTime;
     private final int delay = 5000;
     private static final int BUFFSIZE = 15;
-    private static int [] lineTime = new int [BUFFSIZE];
+    private static int [] lineTime;
     private static int pointer = 0;
 
     public GeofenceIntentService(){
@@ -49,21 +49,6 @@ public class GeofenceIntentService extends IntentService{
         GeofencingEvent event = GeofencingEvent.fromIntent(intent);
         int geofenceTransition = event.getGeofenceTransition();
         final List<Geofence> triggeringGeofences = event.getTriggeringGeofences();
-        /* For push notification
-        if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER||
-                geofenceTransition==Geofence.GEOFENCE_TRANSITION_EXIT ) {
-
-            // Get the geofences that were triggered. A single event can trigger multiple geofences.
-
-            String geofenceTransitionDetails = getGeofenceTransitionDetails(
-                    this,
-                    geofenceTransition,
-                    triggeringGeofences
-            );
-
-            //This sends a push notification
-            //sendNotification(geofenceTransitionDetails);
-        }*/
 
         if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER){
             MainActivity.inside = false;
@@ -82,6 +67,7 @@ public class GeofenceIntentService extends IntentService{
                                     if (MainActivity.inside) {
                                         APICalls.updatePopulation(0, getWaitTime(), Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
                                         Log.d("Sending server call", Integer.toString(getWaitTime()));
+                                        sendNotification("Sending update. You were waiting for " + getWaitTime() + " seconds");
                                     }
                                     else {
                                         Log.d("Wait time incrementing", Integer.toString(getWaitTime()));
@@ -95,6 +81,7 @@ public class GeofenceIntentService extends IntentService{
                 putTimer.schedule(putTimerTask, 10000);
             }
             AlgorithmsDet.LINESTORAGE = new AlgorithmsDet.LineObject[AlgorithmsDet.ARRAY_SIZE];
+            lineTime = new int [BUFFSIZE];
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -107,7 +94,8 @@ public class GeofenceIntentService extends IntentService{
                 }
             }, delay);
            //TODO: FIX THIS
-           startService(new Intent(getBaseContext(), InsideOutside.class));
+           Intent insideIntent = new Intent(MainActivity.getContext(), InsideOutside.class);
+           startService(insideIntent);
         }
         else if(geofenceTransition == Geofence.GEOFENCE_TRANSITION_EXIT){
             Log.d("Leaving!", Integer.toString(GeofenceIntentService.currentGeofenceId));
@@ -121,8 +109,8 @@ public class GeofenceIntentService extends IntentService{
                 APICalls.updatePopulation(1, 0, currentGeofenceId);
                 GeofenceIntentService.currentGeofenceId = -1;
             }
-            stopService(new Intent(getBaseContext(), InsideOutside.class));
-        }
+            Intent insideIntent = new Intent(MainActivity.getContext(), InsideOutside.class);
+            stopService(insideIntent);        }
         return;
     }
     public int getWaitTime(){
@@ -184,6 +172,10 @@ public class GeofenceIntentService extends IntentService{
     }
     //Just the copied notification
     private void sendNotification(String notificationDetails) {
+        notificationDetails += " Uncertainties: ";
+        for(int i = 0; i < 7; i++){
+            notificationDetails += InsideOutside.uncertainty[i] + " , ";
+        }
         // Create an explicit content Intent that starts the main Activity.
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -210,8 +202,9 @@ public class GeofenceIntentService extends IntentService{
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(),
                         R.drawable.ic_action_likeable))
                 .setColor(Color.RED)
-                .setContentTitle(notificationDetails)
-                .setContentText(getString(R.string.geofence_transition_notification_text))
+                .setContentTitle("Entered")
+                .setContentText(notificationDetails)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(notificationDetails))
                 .setContentIntent(notificationPendingIntent);
 
         // Dismiss notification once the user touches it.
