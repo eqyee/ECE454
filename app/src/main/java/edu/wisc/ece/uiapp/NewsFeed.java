@@ -112,7 +112,7 @@ public class NewsFeed extends Fragment {
         MainActivity.events.clear();
         adapter.notifyDataSetInvalidated();
         APICalls.getEvents(getActivity(), Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude), MainActivity.RADIUS);
-        APICalls.getBars(Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude));
+        //APICalls.getBars(Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude));
         adapter.notifyDataSetChanged();
         Log.d("LAT", Double.toString(CurrentLocation.latitude));
         Log.d("LON", Double.toString(CurrentLocation.longitude));

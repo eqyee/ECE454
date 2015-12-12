@@ -47,6 +47,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
             Log.e("Restore", "Restoring from bundle!");
             CurrentLocation.latitude = (double)savedInstanceState.getSerializable("latitude");
             CurrentLocation.longitude = (double)savedInstanceState.getSerializable("longitude");
+            GeofenceIntentService.currentGeofenceId = savedInstanceState.getInt("geofence");
             APICalls.barMap = (HashMap<Integer, Bar>) savedInstanceState.getSerializable("barMap");
             APICalls.eventMap = (HashMap<Integer, ArrayList<Event>>) savedInstanceState.getSerializable("eventMap");
             MainActivity.events = (ArrayList<Event>) savedInstanceState.getSerializable("events");
@@ -56,16 +57,20 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         catch(Exception e){
             Log.e("Restore", e.toString());
         }
-        if (APICalls.barMap.values() == null){
-            APICalls.getBars(Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude));
-            Log.e("WARNING", "EVENTS MIGHT BE MISSING");
-        }
-        else{
-            Collection<Bar> barList = APICalls.barMap.values();
-            mGeofenceManager.onStart();
-            mGeofenceManager.addGeofences(barList);
-            mGeofenceManager.enableGeofence();
-        }
+        Collection<Bar> barList = APICalls.barMap.values();
+        mGeofenceManager.onStart();
+        mGeofenceManager.addGeofences(barList);
+        mGeofenceManager.enableGeofence();
+//        if (APICalls.barMap.values() == null){
+//            APICalls.getBars(Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude));
+//            Log.e("WARNING", "EVENTS MIGHT BE MISSING");
+//        }
+//        else{
+//            Collection<Bar> barList = APICalls.barMap.values();
+//            mGeofenceManager.onStart();
+//            mGeofenceManager.addGeofences(barList);
+//            mGeofenceManager.enableGeofence();
+//        }
         setContentView(R.layout.activity_main);
 
 
@@ -184,6 +189,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onSaveInstanceState(outState);
         outState.putSerializable("barMap", APICalls.barMap);
         outState.putSerializable("eventMap", APICalls.eventMap);
+        outState.putInt("geofence", GeofenceIntentService.currentGeofenceId);
         outState.putSerializable("events", MainActivity.events);
         outState.putSerializable("latitude", CurrentLocation.latitude);
         outState.putSerializable("longitude", CurrentLocation.longitude);

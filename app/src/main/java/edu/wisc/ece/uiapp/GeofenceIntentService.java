@@ -68,6 +68,7 @@ public class GeofenceIntentService extends IntentService{
                                         APICalls.updatePopulation(0, getWaitTime(), Integer.parseInt(triggeringGeofences.get(0).getRequestId()));
                                         Log.d("Sending server call", Integer.toString(getWaitTime()));
                                         sendNotification("Sending update. You were waiting for " + getWaitTime() + " seconds");
+
                                     }
                                     else {
                                         Log.d("Wait time incrementing", Integer.toString(getWaitTime()));
