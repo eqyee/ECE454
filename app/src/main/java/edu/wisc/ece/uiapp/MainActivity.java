@@ -38,13 +38,16 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
     public static final String API_URL = "http://flock-app-dev2.elasticbeanstalk.com/";
     public static GeofenceManager mGeofenceManager;
     public static Context mContext;
+    private boolean created;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        created = false;
         mGeofenceManager = new GeofenceManager(this);
         try{
             Log.e("Restore", "Restoring from bundle!");
+            created = savedInstanceState.getBoolean("created");
             CurrentLocation.latitude = (double)savedInstanceState.getSerializable("latitude");
             CurrentLocation.longitude = (double)savedInstanceState.getSerializable("longitude");
             GeofenceIntentService.currentGeofenceId = savedInstanceState.getInt("geofence");
@@ -57,10 +60,13 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         catch(Exception e){
             Log.e("Restore", e.toString());
         }
-        Collection<Bar> barList = APICalls.barMap.values();
-        mGeofenceManager.onStart();
-        mGeofenceManager.addGeofences(barList);
-        mGeofenceManager.enableGeofence();
+        if (created == false) {
+            Collection<Bar> barList = APICalls.barMap.values();
+            mGeofenceManager.onStart();
+            mGeofenceManager.addGeofences(barList);
+            mGeofenceManager.enableGeofence();
+            created = true;
+        }
 //        if (APICalls.barMap.values() == null){
 //            APICalls.getBars(Double.toString(CurrentLocation.longitude), Double.toString(CurrentLocation.latitude));
 //            Log.e("WARNING", "EVENTS MIGHT BE MISSING");
@@ -189,6 +195,7 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onSaveInstanceState(outState);
         outState.putSerializable("barMap", APICalls.barMap);
         outState.putSerializable("eventMap", APICalls.eventMap);
+        outState.putBoolean("created", created);
         outState.putInt("geofence", GeofenceIntentService.currentGeofenceId);
         outState.putSerializable("events", MainActivity.events);
         outState.putSerializable("latitude", CurrentLocation.latitude);
