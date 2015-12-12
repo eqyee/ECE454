@@ -116,6 +116,7 @@ public class Event implements Parcelable {
         favorites = in.readInt();
         barId = in.readInt();
         subject = in.readString();
+        tags = in.createStringArray();
         if (in.readByte() == 0x01) {
             newsFeedItems = new ArrayList<String>();
             in.readList(newsFeedItems, String.class.getClassLoader());
@@ -139,6 +140,7 @@ public class Event implements Parcelable {
         dest.writeInt(favorites);
         dest.writeInt(barId);
         dest.writeString(subject);
+        dest.writeStringArray(tags);
         if (newsFeedItems == null) {
             dest.writeByte((byte) (0x00));
         } else {

@@ -44,10 +44,14 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         super.onCreate(savedInstanceState);
         mGeofenceManager = new GeofenceManager(this);
         try{
+            Log.e("Restore", "Restoring from bundle!");
+            CurrentLocation.latitude = (double)savedInstanceState.getSerializable("latitude");
+            CurrentLocation.longitude = (double)savedInstanceState.getSerializable("longitude");
             APICalls.barMap = (HashMap<Integer, Bar>) savedInstanceState.getSerializable("barMap");
             APICalls.eventMap = (HashMap<Integer, ArrayList<Event>>) savedInstanceState.getSerializable("eventMap");
             MainActivity.events = (ArrayList<Event>) savedInstanceState.getSerializable("events");
-            Log.e("Restore", "Restoring from bundle!");
+            Log.e("Restore", "Restored!");
+
         }
         catch(Exception e){
             Log.e("Restore", e.toString());
@@ -181,6 +185,9 @@ public class MainActivity extends FragmentActivity implements ActionBar.TabListe
         outState.putSerializable("barMap", APICalls.barMap);
         outState.putSerializable("eventMap", APICalls.eventMap);
         outState.putSerializable("events", MainActivity.events);
+        outState.putSerializable("latitude", CurrentLocation.latitude);
+        outState.putSerializable("longitude", CurrentLocation.longitude);
+
         Log.e("Parceable", "Put Parceables!");
     }
 
