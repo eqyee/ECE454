@@ -82,7 +82,9 @@ public class GeofenceIntentService extends IntentService{
                 putTimer.schedule(putTimerTask, 10000);
             }
             AlgorithmsDet.LINESTORAGE = new AlgorithmsDet.LineObject[AlgorithmsDet.ARRAY_SIZE];
+            AlgorithmsDet.pointer = 0;
             lineTime = new int [BUFFSIZE];
+            pointer = 0;
             delayHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -104,6 +106,10 @@ public class GeofenceIntentService extends IntentService{
                 putTimer.cancel();
                 putTimer = null;
             }
+            AlgorithmsDet.LINESTORAGE = new AlgorithmsDet.LineObject[AlgorithmsDet.ARRAY_SIZE];
+            AlgorithmsDet.pointer = 0;
+            lineTime = new int [BUFFSIZE];
+            pointer = 0;
             delayHandler.removeCallbacksAndMessages(null);
             Log.d("LeavingGeofenceID", Integer.toString(GeofenceIntentService.currentGeofenceId));
             if(GeofenceIntentService.currentGeofenceId != -1) {
@@ -111,7 +117,8 @@ public class GeofenceIntentService extends IntentService{
                 GeofenceIntentService.currentGeofenceId = -1;
             }
             Intent insideIntent = new Intent(MainActivity.getContext(), InsideOutside.class);
-            stopService(insideIntent);        }
+            stopService(insideIntent);
+        }
         return;
     }
     public int getWaitTime(){
