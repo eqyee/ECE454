@@ -50,7 +50,7 @@ public class GeofenceManager implements ResultCallback<Status>, GoogleApiClient.
 
                         .setRequestId("" + b.getId())
                                 //set static radius to be 100
-                        .setCircularRegion(b.getLocation().latitude, b.getLocation().longitude, 100.0f)
+                        .setCircularRegion(b.getLocation().latitude, b.getLocation().longitude, 80.0f)
                         .setExpirationDuration(100000000)
                         .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                                 Geofence.GEOFENCE_TRANSITION_EXIT)

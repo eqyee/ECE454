@@ -75,7 +75,7 @@ public class InsideOutside extends NonStopIntentService implements LocationListe
 
     public void getLocationUpdates(){
         try {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15000, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 0, this);
         }catch (SecurityException se){}
     }
 
@@ -130,7 +130,7 @@ public class InsideOutside extends NonStopIntentService implements LocationListe
         int inside = 0;
         int insideCount = 0;
         for(Double curr : uncertainty){
-            if(curr > 60.0 && curr < 9999) {
+            if(curr > 40.0 && curr < 9999) {
                 insideCount++;
             }
             else if(curr >= 9999){
