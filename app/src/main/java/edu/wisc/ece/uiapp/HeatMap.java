@@ -11,7 +11,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.StrictMode;
 import android.speech.RecognizerIntent;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.LayoutInflater;
@@ -39,10 +38,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimerTask;
 
 /**
  * Created by CCS on 10/28/2015.
+ *
+ * Uses open source search bar by Quinny898 from the repository at
+ * https://github.com/Quinny898/PersistentSearch
  */
 public class HeatMap extends Fragment implements OnMapReadyCallback {
     private static View view;

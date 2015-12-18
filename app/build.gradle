@@ -30,6 +30,8 @@ dependencies {
     compile 'com.android.support:support-v13:23.0.+'
     compile 'com.google.android.gms:play-services-location:8.1.0'
     compile 'com.google.maps.android:android-maps-utils:0.4+'
+
+    // Include open source search bar by Quinny898
     compile 'com.quinny898.library.persistentsearch:library:1.1.0-SNAPSHOT'
     compile files('../libs/joda-time-2.4.jar')
     compile 'com.android.support:design:23+'

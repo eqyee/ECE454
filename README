@@ -1,0 +1,10 @@
+Flock
+By: Evan Yee, Matt Dallman, Jake Oney, Sam Solovy
+
+Android Application
+The code can be compiled and run from Android Studio by loading the project root directory into Android Studio
+and then clicking Run->Run 'app'.  Selecting an attached device in debugging mode will compile the application
+and load it onto the selected device.
+
+Server
+Bars and events can be added to the server by ...
