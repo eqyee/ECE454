@@ -8,4 +8,4 @@ and load it onto the selected device.
 
 Server
 Bars and events can be added to the server by issuing a simple server GET api call to an Amazon Web Services instance.  The
-Server calls have been set up and are in the code.
+Server calls have been set up and are in the code.  The server is running a Django backend.
